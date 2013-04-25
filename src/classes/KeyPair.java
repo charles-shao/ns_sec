@@ -1,5 +1,6 @@
 package classes;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,70 +10,74 @@ import java.util.List;
  * where k is any integer > 0
  */
 public class KeyPair {
-	private List<int[]> factors;
-	private int n;
-	private int publicKey;
-	private int privateKey;
+	private final static BigInteger one = new BigInteger("1");
+	private List<BigInteger[]> factors;
+	private static BigInteger k;
+	private BigInteger modulus;
+	private BigInteger publicKey;
+	private BigInteger privateKey;
 	
 	public KeyPair() {
-		factors = new ArrayList<int[]>();
+		k = new BigInteger("1");
+		factors = new ArrayList<BigInteger[]>();
 		generateKeyPair();
 	}
 	
-	public int getModulo() {
-		return n;
+	public BigInteger getModulus() {
+		return modulus;
 	}
 	
 	private void generateKeyPair() {
 		Primes primes = new Primes();
-		int p = primes.getLargePrime();
-		int q = primes.getSmallPrime();
-		int k = 1;
-		int kp;
+		BigInteger p = primes.getLargePrime();
+		BigInteger q = primes.getSmallPrime();
 		
-		n = p * q;
+		modulus = p.multiply(q);
+		BigInteger phi = (p.subtract(one)).multiply(q.subtract(one));
+		BigInteger keyPair;
 		
+		long kCount = k.intValue();
 		do {
-			kp = k*(p-1)*(q-1)+1;
-			k++;
-		} while (!getFactors(kp));
+			keyPair = k.multiply(phi).add(one);
+			k = BigInteger.valueOf(kCount++);	
+		} while (!getFactors(keyPair.intValue()));
 		
-		int[] keyPairs = factors.get(factors.size() -1);
-		publicKey = keyPairs[0];
-		privateKey = keyPairs[1];
+		int lastElement = factors.size() - 1;
+		BigInteger[] keys = factors.get(lastElement);
+		publicKey = keys[0];
+		privateKey = keys[1];
 	}
-
+	
 	// Do not add 1 and itself as part of the candidates for key pairs
 	private boolean getFactors(int value) {
-		int[] pair;
+		BigInteger[] pair;
 		int upperLimit = value;
 		int currentNumber = value;
-
 		for (int i = 2; i < upperLimit; i++) {
 			if ((currentNumber % i) == 0) {
 				upperLimit = currentNumber / i;
 				// Avoid its root number
 				if (upperLimit != i) {
-					pair = new int[2];
-					pair[0] = i;
-					pair[1] = upperLimit;
+					pair = new BigInteger[2];
+					pair[0] = BigInteger.valueOf(i);
+					pair[1] = BigInteger.valueOf(upperLimit);
 					factors.add(pair);					
 				}
 			}
 		}
-		
-		if (factors.size() > 1) {
+
+		if (factors.size() > 0) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public int getPublicKey() {
+	public BigInteger getPublicKey() {
 		return publicKey;
 	}
 
-	public int getPrivateKey() {
+	public BigInteger getPrivateKey() {
 		return privateKey;
 	}
 }
