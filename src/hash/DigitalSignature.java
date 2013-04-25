@@ -1,4 +1,4 @@
-package classes;
+package hash;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -23,8 +23,9 @@ public class DigitalSignature {
 			// Create KeyPair
 			KeyPair pair = keyGen.generateKeyPair();
 			
-			PrivateKey priv = pair.getPrivate();
-			PublicKey pub = pair.getPublic();
+			System.out.println(pair.getPublic());
+//			PrivateKey priv = pair.getPrivate();
+//			PublicKey pub = pair.getPublic();
 
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
