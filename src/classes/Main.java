@@ -4,6 +4,7 @@ import hash_module.Digestor;
 
 import java.util.Collection;
 
+import customer_side.Customer;
 import encryption_module.RSA;
 
 public class Main {
@@ -20,6 +21,7 @@ public class Main {
 		String decry = rsa.decryptMessage(cipherBlock, rsa.getPublicKey(), rsa.getModulus());
 		System.out.println(decry);
 
+		Customer customer = new Customer();
 //		DigitalSignature ds = new DigitalSignature();
 //		GenSig gs = new GenSig(args);
 	}

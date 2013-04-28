@@ -1,4 +1,4 @@
-package ca_module;
+package encryption_module;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
