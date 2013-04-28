@@ -24,7 +24,7 @@ public class RSA {
 	}
 	
 	// m = cipher^publicKey mod n
-	private BigInteger decrypt(BigInteger encrypted) {
+	public BigInteger decrypt(BigInteger encrypted) {
 		return encrypted.modPow(publicKey, modulus);
 	}
 	
