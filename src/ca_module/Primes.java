@@ -1,4 +1,4 @@
-package classes;
+package ca_module;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -8,7 +8,7 @@ import java.security.SecureRandom;
  * Simple prime number generator.
  */
 public class Primes {
-	private static final int LARGE_BIT_LENGTH = 16;
+	private static final int LARGE_BIT_LENGTH = 12;
 	private static final int SMALL_BIT_LENGTH = 8;
 	private final static SecureRandom RANDOM = new SecureRandom();
 	private BigInteger largePrime, smallPrime;

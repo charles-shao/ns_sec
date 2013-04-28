@@ -1,4 +1,4 @@
-package classes;
+package ca_module;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -42,8 +42,8 @@ public class KeyPair {
 			k = BigInteger.valueOf(kCount++);	
 		} while (!getFactors(keyPair.intValue()));
 		
-		int lastElement = factors.size() - 1;
-		BigInteger[] keys = factors.get(lastElement);
+		// Get the first set as they are the set of numbers which are farthest apart
+		BigInteger[] keys = factors.get(0);
 		publicKey = keys[0];
 		privateKey = keys[1];
 	}

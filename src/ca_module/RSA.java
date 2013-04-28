@@ -1,4 +1,4 @@
-package classes;
+package ca_module;
 
 import java.math.BigInteger;
 
@@ -13,13 +13,15 @@ public class RSA {
 		publicKey = keyPair.getPublicKey();
 		privateKey = keyPair.getPrivateKey();
 	}
-
-	BigInteger encrypt(BigInteger message) {
-		return message.modPow(publicKey, modulus);
+	
+	// c = cipher^privateKey mod n
+	public BigInteger encrypt(BigInteger message) {
+		return message.modPow(privateKey, modulus);
 	}
-
-	BigInteger decrypt(BigInteger encrypted) {
-		return encrypted.modPow(privateKey, modulus);
+	
+	// m = cipher^publicKey mod n
+	public BigInteger decrypt(BigInteger encrypted) {
+		return encrypted.modPow(publicKey, modulus);
 	}
 
 	public void printDetails() {
