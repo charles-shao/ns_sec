@@ -1,4 +1,4 @@
-package ca_module;
+package encryption_module;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -51,8 +51,8 @@ public class KeyPair {
 	// Do not add 1 and itself as part of the candidates for key pairs
 	private boolean getFactors(int value) {
 		BigInteger[] pair;
-		int upperLimit = value;
-		int currentNumber = value;
+		Integer upperLimit = value;
+		Integer currentNumber = value;
 		for (int i = 2; i < upperLimit; i++) {
 			if ((currentNumber % i) == 0) {
 				upperLimit = currentNumber / i;

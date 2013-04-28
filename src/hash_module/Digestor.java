@@ -15,7 +15,9 @@ import java.security.NoSuchAlgorithmException;
  * Collisions: theoretical attack of 2^51
  */
 public class Digestor {
-
+	
+	private static final String SHA1 = "SHA1";
+	
 	public static String process(String message) {
 		String sha1 = null;
 		try {
@@ -28,17 +30,14 @@ public class Digestor {
 
 	private static String sha1(String input) throws NoSuchAlgorithmException {
 		MessageDigest mDigest = null;
-		mDigest = MessageDigest.getInstance("SHA1");
+		mDigest = MessageDigest.getInstance(SHA1);
 
 		byte[] result = mDigest.digest(input.getBytes());
 		StringBuffer sb = new StringBuffer();
-		System.out.println("Result of digesting message: " + result);
-		System.out.println("Result length: " + result.length);
 
 		for (int i = 0; i < result.length; i++) {
 			// Convert bytecode to String
-			sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16)
-					.substring(1));
+			sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
 		}
 		return sb.toString();
 	}
