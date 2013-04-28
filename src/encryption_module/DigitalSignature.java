@@ -1,5 +1,7 @@
 package encryption_module;
 
+import hash_module.Digestor;
+
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -32,6 +34,9 @@ public class DigitalSignature {
 		sb.append("\tPublic Key: " + BREAK);
 		sb.append("\t\tModulus: " + modulus + BREAK);
 		sb.append("\t\tExponent: " + publicKey + BREAK);
+		String hashSignature = Digestor.process(sb.toString());
+		sb.append("Signature Algorithm: SHA1withRSAEncryption" + BREAK);
+		sb.append("\t" + hashSignature);
 		writer.write(sb.toString());
 		writer.close();
 	}
