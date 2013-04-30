@@ -27,10 +27,8 @@ public class Main {
 		Customer customer = new Customer();
 		customer.createDualSignature();
 		System.out.println();
-//		System.out.println("Customer public key: " + customer.getPublicKey());
-//		System.out.println(customer.getModulus());
-		
+
 		DigitalSignature ds = new DigitalSignature(customer.getPublicKey(), customer.getModulus());
-//		GenSig gs = new GenSig(args);
+
 	}
 }
