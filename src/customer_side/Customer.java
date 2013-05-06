@@ -24,7 +24,7 @@ public class Customer {
 		PAYMENT_HASH =new ArrayList<String>();
 		ORDER_HASH = new ArrayList<String>();
 	}
-	
+
 	public void createDualSignature() {
 		digestFile(PAYMENT_INFORMATION_PATH, PAYMENT_HASH);
 		digestFile(ORDER_INFORMATION_PATH, ORDER_HASH);
