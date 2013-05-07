@@ -1,0 +1,14 @@
+Certificate:
+	Version: 0
+	Signature Algorithm: SHA1WithRSAEncryption
+	Issuer: Charles Shao
+	Validity:
+		Not Before: Feb 7 12:00:00 2013 AEST
+		Not After : Feb 7 12:00:00 2014 AEST
+	Name: 
+	Public Key Algorithm: RSA: 
+	Public Key: 
+		Modulus: 9131147
+		Exponent: 443
+Signature Algorithm: SHA1withRSAEncryption
+	131d84815defcd59d7147e3e9235216bb5a6d54e

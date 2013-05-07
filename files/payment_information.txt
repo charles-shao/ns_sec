@@ -1,0 +1,5 @@
+Name: Charles Shao
+Payment Amount: $1125.79
+Payment Method: Credit Card
+Credit Card Number: 1234 5678 9012 3456
+Holder: Penguin Pop
