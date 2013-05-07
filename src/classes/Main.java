@@ -31,8 +31,8 @@ public class Main {
 
 		DigitalSignature ds = new DigitalSignature(customer.getPublicKey(), customer.getModulus());
 		
-		TripleDES tdes = new TripleDES();
-		tdes.encrypt(message);
+		TripleDES tripleDES = new TripleDES();
+		tripleDES.encrypt(message);
 
 	}
 }
