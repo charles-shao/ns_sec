@@ -7,6 +7,7 @@ import java.util.Collection;
 import customer_side.Customer;
 import encryption_module.DigitalSignature;
 import encryption_module.RSA;
+import encryption_module.TripleDES;
 
 public class Main {
 	public static void main(String[] args) {
@@ -29,6 +30,9 @@ public class Main {
 		System.out.println();
 
 		DigitalSignature ds = new DigitalSignature(customer.getPublicKey(), customer.getModulus());
+		
+		TripleDES tdes = new TripleDES();
+		tdes.encrypt(message);
 
 	}
 }
