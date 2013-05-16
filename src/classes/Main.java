@@ -24,15 +24,18 @@ public class Main {
 		String decry = rsa.decryptMessage(cipherBlock, rsa.getPublicKey(), rsa.getModulus());
 		System.out.println(decry);
 
-		System.out.println("\r\nCustomer dual signature");
-		Customer customer = new Customer();
-		customer.createDualSignature();
+		// rough implementation
+//		System.out.println("\r\nCustomer dual signature");
+//		Customer customer = new Customer();
+//		customer.createDualSignature();
 		System.out.println();
-
-		DigitalSignature ds = new DigitalSignature(customer.getPublicKey(), customer.getModulus());
 		
-		TripleDES tripleDES = new TripleDES();
-		tripleDES.encrypt(message);
-
+		// digital signature generation
+//		DigitalSignature ds = new DigitalSignature(customer.getPublicKey(), customer.getModulus());
+		
+		TripleDES tDES = new TripleDES();
+		System.out.println("tDES key: " + tDES.getKeyAsHex());
+		byte[] tdesMessage = tDES.encrypt(message);
+		System.out.println(tDES.decrypt(tdesMessage));
 	}
 }

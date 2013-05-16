@@ -19,6 +19,7 @@ public class DigitalSignature {
 		}
 	}
 
+	// Currently self signed signature
 	private void writeDS(BigInteger publicKey, BigInteger modulus)
 			throws FileNotFoundException, UnsupportedEncodingException {
 		PrintWriter writer = new PrintWriter(FILE_PATH, "UTF-8");
