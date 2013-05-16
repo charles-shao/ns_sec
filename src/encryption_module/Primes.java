@@ -18,7 +18,7 @@ public class Primes {
 	public Primes() {
 		largePrime = BigInteger.probablePrime(LARGE_BIT_LENGTH, RANDOM);
 		smallPrime = BigInteger.probablePrime(SMALL_BIT_LENGTH, RANDOM);
-		System.out.println("Prime numbers: " + largePrime + ", " + smallPrime);
+		// System.out.println("Prime numbers: " + largePrime + ", " + smallPrime);
 	}
 	
 	public BigInteger getLargePrime() {

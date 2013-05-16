@@ -1,14 +1,14 @@
 Certificate:
 	Version: 0
 	Signature Algorithm: SHA1WithRSAEncryption
-	Issuer: Charles Shao
+	Issuer: Lock and Run
 	Validity:
 		Not Before: Feb 7 12:00:00 2013 AEST
 		Not After : Feb 7 12:00:00 2014 AEST
 	Name: 
 	Public Key Algorithm: RSA: 
 	Public Key: 
-		Modulus: 10853957
-		Exponent: 59
-Signature Algorithm: SHA1withRSAEncryption
-	30920fa82bab0cd80bb6f96f85ca52f40777acab
+		Modulus: 14095801
+		Exponent: 13
+Thumbprint Algorithm: SHA1withRSAEncryption
+	Thumbprint:932659ba1d48674ad9d90e9ac23b8fd529fbaa1d

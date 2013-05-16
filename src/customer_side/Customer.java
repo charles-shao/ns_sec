@@ -25,7 +25,7 @@ public class Customer {
 		ORDER_HASH = new ArrayList<String>();
 	}
 
-	public void createDualSignature() {
+	public void digestPaymentOrder() {
 		digestFile(PAYMENT_INFORMATION_PATH, PAYMENT_HASH);
 		digestFile(ORDER_INFORMATION_PATH, ORDER_HASH);
 		
@@ -40,6 +40,7 @@ public class Customer {
 		
 		// Rehash the message digest
 		String paymentOrder = Digestor.process(messageDigest.toString());
+		
 		// Encrypt the hash with RSA
 		Collection<String> pomd = RSA.encrypt(paymentOrder);
 		for (String s : pomd) {

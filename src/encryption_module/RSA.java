@@ -74,4 +74,8 @@ public class RSA {
 	public BigInteger getModulus() {
 		return modulus;
 	}
+	
+	public String getAlgorithm(){
+		return "RSA";
+	}
 }
