@@ -44,10 +44,24 @@ public class TripleDES {
 		return inputBytes;
 	}
 
+	
 	public String decrypt(byte[] cipherText) {
 		byte[] outputBytes = null;
 		try {
 			cipher.init(Cipher.DECRYPT_MODE, key);
+			outputBytes = cipher.doFinal(cipherText);
+			return new String(outputBytes, "UTF-8");
+		} catch (IllegalBlockSizeException | BadPaddingException
+				| InvalidKeyException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String decrypt(byte[] cipherText, SecretKey secretKey) {
+		byte[] outputBytes = null;
+		try {
+			cipher.init(Cipher.DECRYPT_MODE, secretKey);
 			outputBytes = cipher.doFinal(cipherText);
 			return new String(outputBytes, "UTF-8");
 		} catch (IllegalBlockSizeException | BadPaddingException

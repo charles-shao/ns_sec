@@ -25,17 +25,31 @@ public class Main {
 		System.out.println(decry);
 
 		// rough implementation
-//		System.out.println("\r\nCustomer dual signature");
-//		Customer customer = new Customer();
-//		customer.createDualSignature();
+		System.out.println("\r\nCustomer dual signature");
+		Customer customer = new Customer();
+		customer.createDualSignature();
 		System.out.println();
 		
 		// digital signature generation
-//		DigitalSignature ds = new DigitalSignature(customer.getPublicKey(), customer.getModulus());
+		DigitalSignature ds = new DigitalSignature(customer.getPublicKey(), customer.getModulus());
 		
 		TripleDES tDES = new TripleDES();
 		System.out.println("tDES key: " + tDES.getKeyAsHex());
 		byte[] tdesMessage = tDES.encrypt(message);
 		System.out.println(tDES.decrypt(tdesMessage));
+	}
+	
+	private void steps(){
+		// 1. Customer, merchant and bank have CA certificates (contains each of their RSA public keys + encrypted with TripleDES)
+		// 2. Customer establishes handshakes with the bank and merchant (Use RSA, TripleDES and SHA1). Create Signature and send secret.
+		// 3. Merchant has two signatures. One to sign messages and another for key exchange.
+		// 4. Bank has two signatures. One to sign messages and another for key exchange.
+		// 5. Merchant receives the following information - PIMD, OI and Dual Signature (signed by CA)
+		// 6. Merchant decrypts Dual Signature with Customer PK to verify that MD(OI)||PIMD is the same
+		// 7. Bank receives the following information - OIMD, PI and Dual Signature (signed by CA)
+		// 8. Bank decrypts Dual Signature with Customer PK to verify that OIMD||MD(PI) is the same
+		// 9. Bank and Merchant send TripleDES secret
+		// 9. Merchant sends PIMD, its public key encrypted with TripleDES and its Digital Signature signed by its CA
+		// 10. Bank decrypts the public key with the shared secret (TripleDES), decrypts CA with the public key then...
 	}
 }
