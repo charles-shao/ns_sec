@@ -16,21 +16,31 @@ public class RSA {
 		privateKey = keyPair.getPrivateKey();
 	}
 	
-	// c = cipher^privateKey mod n
+	/**
+	 * Encrypt when object is known
+	 * c = cipher^privateKey mod n
+	 * @param message
+	 * @return
+	 */
 	private BigInteger encrypt(BigInteger message) {
 		BigInteger exponent = privateKey.getExponent();
 		BigInteger modulus = privateKey.getModulus();
 		return message.modPow(exponent, modulus);
 	}
 	
-	// m = cipher^publicKey mod n
+	/**
+	 * Decrypt when object is known
+	 * m = cipher^publicKey mod n
+	 * @param encrypted
+	 * @return
+	 */
 	public BigInteger decrypt(BigInteger encrypted) {
 		BigInteger exponent = publicKey.getExponent();
 		BigInteger modulus = publicKey.getModulus();
 		return encrypted.modPow(exponent, modulus);
 	}
 	
-	public Collection<String> encrypt(String message) {
+	public RSA encrypt(String message) {
 		cipherText = new ArrayList<String>();
 		for (int i = 0, n = message.length(); i < n; i++) {
 			Integer codePoint = message.codePointAt(i);
@@ -38,7 +48,7 @@ public class RSA {
 		    String hexString = Long.toHexString(cipherPoint.intValue());
 		    cipherText.add(hexString);
 		}
-		return cipherText;
+		return this;
 	}
 	
 	public String decryptMessage(Collection<String> cipherBlock, AsymmetricKey publicKey) {
@@ -51,7 +61,7 @@ public class RSA {
 		return sb.toString();
 	}
 	
-	public String stringifyCipherMessage() {
+	public String serialize() {
 		StringBuffer sb = new StringBuffer();
 		for (String cipherPoint : cipherText) {
 			sb.append(cipherPoint);

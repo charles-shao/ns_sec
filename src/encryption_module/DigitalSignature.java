@@ -7,31 +7,28 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 public class DigitalSignature {
-	private static final String FILE_PATH = "/home/charles/devel/ns_set/files/ca";
 	private static final String BREAK = "\r\n";
 
-	private String issuer = "Charles Shao";
-	private String algorithm = "RSA";
+	private String issuer;
+	private RSA RSA;
 	
 	private AsymmetricKey publicKey;
 	
-	public DigitalSignature(AsymmetricKey publicKey) {
+	public DigitalSignature(AsymmetricKey publicKey, RSA RSA, String issuer) {
 		this.publicKey = publicKey;
+		this.RSA = RSA;
+		this.issuer = issuer;
 	}
 	
 	public void setIssuer(String issuer){
 		this.issuer = issuer;	
 	}
-	
-	public void setPKA(String algorithm){
-		this.algorithm = algorithm;
-	}
 
-	public void createDS(){
+	public void createDigitalSignature(String filepath){
 		PrintWriter writer = null;
 		
 		try {
-			writer = new PrintWriter(FILE_PATH, "UTF-8");
+			writer = new PrintWriter(filepath, "UTF-8");
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -45,15 +42,16 @@ public class DigitalSignature {
 		sb.append("\t\tNot Before: Feb 7 12:00:00 2013 AEST" + BREAK);
 		sb.append("\t\tNot After : Feb 7 12:00:00 2014 AEST" + BREAK);
 		sb.append("\tName: " + BREAK);
-		sb.append("\tPublic Key Algorithm: " + algorithm + ": " + BREAK);
+		sb.append("\tPublic Key Algorithm: " + RSA.getAlgorithm() + ": " + BREAK);
 		sb.append("\tPublic Key: " + BREAK);
 		sb.append("\t\tModulus: " + publicKey.getModulus() + BREAK);
 		sb.append("\t\tExponent: " + publicKey.getExponent() + BREAK);
-
+		sb.append("Signature Algorithm: SHA1withRSAEncryption" + BREAK);
+		sb.append("\tSignature:" + BREAK);
+		
 		String hashSignature = Digestor.process(sb.toString());
-		sb.append("Thumbprint Algorithm: SHA1withRSAEncryption" + BREAK);
-		sb.append("\tThumbprint:" + BREAK);
-		sb.append("\t" + hashSignature);
+		String encryptedSignature = RSA.encrypt(hashSignature).serialize();
+		sb.append("\t\t" + encryptedSignature);
 		writer.write(sb.toString());
 		writer.close();
 	}

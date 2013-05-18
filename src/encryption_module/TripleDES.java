@@ -32,7 +32,11 @@ public class TripleDES {
 		}
 	}
 
-	// Encrypt with the same object - probably the safest way
+	/**
+	 * Encrypt with the same object - probably the safest way
+	 * @param message
+	 * @return byte[]
+	 */
 	public byte[] encrypt(String message) {
 		byte[] inputBytes = null;
 		try {
@@ -45,7 +49,12 @@ public class TripleDES {
 		return inputBytes;
 	}
 
-	// Encrypt statically - messages only
+	/**
+	 * Encrypt statically - messages only
+	 * @param message
+	 * @param secretKey
+	 * @return byte[]
+	 */
 	public static byte[] encrypt(String message, SecretKey secretKey) {
 		byte[] inputBytes = null;
 		try {
@@ -60,6 +69,11 @@ public class TripleDES {
 		return inputBytes;
 	}
 
+	/**
+	 * Decrypt text
+	 * @param cipherText
+	 * @return String:message
+	 */
 	public String decrypt(byte[] cipherText) {
 		byte[] outputBytes = null;
 		try {
@@ -73,7 +87,12 @@ public class TripleDES {
 		return null;
 	}
 
-	// Decrypt statically
+	/**
+	 * Message decryption
+	 * @param cipherText
+	 * @param secretKey
+	 * @return String:message
+	 */
 	public static String decrypt(byte[] cipherText, SecretKey secretKey) {
 		byte[] outputBytes = null;
 		try {
@@ -145,4 +164,5 @@ public class TripleDES {
 		KeyGenerator keygen = KeyGenerator.getInstance(ALGORITHM);
 		return keygen.generateKey();
 	}
+	
 }

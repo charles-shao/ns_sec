@@ -1,0 +1,15 @@
+Certificate:
+	Version: 0
+	Signature Algorithm: SHA1WithRSAEncryption
+	Issuer: Lock and Run
+	Validity:
+		Not Before: Feb 7 12:00:00 2013 AEST
+		Not After : Feb 7 12:00:00 2014 AEST
+	Name: 
+	Public Key Algorithm: RSA: 
+	Public Key: 
+		Modulus: 8238403
+		Exponent: 29
+Signature Algorithm: SHA1withRSAEncryption
+	Signature:
+		57e041381c28c3053cc63c381c221225440a1354583b53588bdc378a98a96381c23c97f33b33533588bd10d01d2e79af3c97f33588bd5e1bd010d01d21225440a13540a135c378a4583b5c378a2e79af2e79af40a1352e79af5e1bd03c97f398a963588bd3c97f3381c2c378a40a135c378a

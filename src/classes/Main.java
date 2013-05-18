@@ -30,9 +30,11 @@ public class Main {
 		Customer customer = new Customer();
 		customer.establishSecret();
 		// Customer sends CA its public key (encrypted with the secret)
+		// CA returns certificate encrypted with private key
 		customer.requestCertificate();
-		// CA returns certificate encrypted with secret key
 
+
+		
 		// Bank shares secret key with CA (for public key encryption)
 		
 		// Bank sends CA its public key

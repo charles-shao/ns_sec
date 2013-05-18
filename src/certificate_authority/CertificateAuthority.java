@@ -1,32 +1,47 @@
 package certificate_authority;
 
+import java.io.File;
+
 import javax.crypto.SecretKey;
 
 import encryption_module.AsymmetricKey;
 import encryption_module.DigitalSignature;
+import encryption_module.RSA;
 import encryption_module.TripleDES;
 
 public class CertificateAuthority {
+	private static final String FILE_PATH = "/home/charles/devel/ns_set/files/certificate_authority/ca";
 	private static final String CA_name = "Lock and Run";
+	
 	private SecretKey secretKey;
-
+	private RSA RSA;
+	
 	public CertificateAuthority() {
+		// May need to refactor
 		TripleDES tDES = new TripleDES();
 		secretKey = tDES.getKey();
+		
+		RSA = new RSA();
 	}
 	
 	public SecretKey getKey(){
 		return secretKey;
 	}
 	
-	// Certificate contains their PK information
-	public void issueCertificate(byte[] cipherPublicKey) {
-		byte[] decryptedKey = TripleDES.decryptKey(cipherPublicKey, secretKey);
-		AsymmetricKey publicKey = (AsymmetricKey)AsymmetricKey.deserialize(decryptedKey);
-
-		DigitalSignature digitalSignature = new DigitalSignature(publicKey);
-		digitalSignature.setIssuer(CA_name);
-		digitalSignature.setPKA(publicKey.getAlgorithm());
-		digitalSignature.createDS();
+	/**
+	 * Certificate contains the requesters PK information
+	 * @param cipherPublicKey
+	 */
+	public void createCertificate(AsymmetricKey publicKey) {
+		DigitalSignature digitalSignature = new DigitalSignature(publicKey, RSA, CA_name);
+		digitalSignature.createDigitalSignature(FILE_PATH);
+	}
+	
+	/**
+	 * Return the certificate file
+	 * @return File:certificate
+	 */
+	public File issueCertificate() {
+		return new File(FILE_PATH);
 	}
 }
