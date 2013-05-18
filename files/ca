@@ -8,7 +8,8 @@ Certificate:
 	Name: 
 	Public Key Algorithm: RSA: 
 	Public Key: 
-		Modulus: 14095801
-		Exponent: 13
+		Modulus: 6511627
+		Exponent: 17
 Thumbprint Algorithm: SHA1withRSAEncryption
-	Thumbprint:932659ba1d48674ad9d90e9ac23b8fd529fbaa1d
+	Thumbprint:
+	97a97221da18b874fcca5c42562dbc3f97461d4c

@@ -1,15 +1,32 @@
 package certificate_authority;
 
+import javax.crypto.SecretKey;
+
+import encryption_module.AsymmetricKey;
 import encryption_module.DigitalSignature;
-import encryption_module.RSA;
+import encryption_module.TripleDES;
 
 public class CertificateAuthority {
 	private static final String CA_name = "Lock and Run";
+	private SecretKey secretKey;
+
+	public CertificateAuthority() {
+		TripleDES tDES = new TripleDES();
+		secretKey = tDES.getKey();
+	}
+	
+	public SecretKey getKey(){
+		return secretKey;
+	}
+	
 	// Certificate contains their PK information
-	public static void issueCertificate(RSA rsa) {
-		DigitalSignature digitalSignature = new DigitalSignature(rsa.getPublicKey(), rsa.getModulus());
+	public void issueCertificate(byte[] cipherPublicKey) {
+		byte[] decryptedKey = TripleDES.decryptKey(cipherPublicKey, secretKey);
+		AsymmetricKey publicKey = (AsymmetricKey)AsymmetricKey.deserialize(decryptedKey);
+
+		DigitalSignature digitalSignature = new DigitalSignature(publicKey);
 		digitalSignature.setIssuer(CA_name);
-		digitalSignature.setPKA(rsa.getAlgorithm());
+		digitalSignature.setPKA(publicKey.getAlgorithm());
 		digitalSignature.createDS();
 	}
 }

@@ -32,6 +32,7 @@ public class TripleDES {
 		}
 	}
 
+	// Encrypt with the same object - probably the safest way
 	public byte[] encrypt(String message) {
 		byte[] inputBytes = null;
 		try {
@@ -44,7 +45,21 @@ public class TripleDES {
 		return inputBytes;
 	}
 
-	
+	// Encrypt statically - messages only
+	public static byte[] encrypt(String message, SecretKey secretKey) {
+		byte[] inputBytes = null;
+		try {
+			Cipher encryptCipher = Cipher.getInstance(ALGORITHM);
+			encryptCipher.init(Cipher.ENCRYPT_MODE, key);
+			inputBytes = encryptCipher.doFinal(message.getBytes());
+		} catch (IllegalBlockSizeException | BadPaddingException
+				| InvalidKeyException | NoSuchAlgorithmException
+				| NoSuchPaddingException e) {
+			e.printStackTrace();
+		}
+		return inputBytes;
+	}
+
 	public String decrypt(byte[] cipherText) {
 		byte[] outputBytes = null;
 		try {
@@ -57,23 +72,73 @@ public class TripleDES {
 		}
 		return null;
 	}
-	
-	public String decrypt(byte[] cipherText, SecretKey secretKey) {
+
+	// Decrypt statically
+	public static String decrypt(byte[] cipherText, SecretKey secretKey) {
 		byte[] outputBytes = null;
 		try {
-			cipher.init(Cipher.DECRYPT_MODE, secretKey);
-			outputBytes = cipher.doFinal(cipherText);
+			Cipher decryptCipher = Cipher.getInstance(ALGORITHM);
+			decryptCipher.init(Cipher.DECRYPT_MODE, secretKey);
+			outputBytes = decryptCipher.doFinal(cipherText);
 			return new String(outputBytes, "UTF-8");
 		} catch (IllegalBlockSizeException | BadPaddingException
-				| InvalidKeyException | UnsupportedEncodingException e) {
+				| InvalidKeyException | NoSuchAlgorithmException
+				| NoSuchPaddingException | UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	public String getKeyAsHex(){
+	/**
+	 * Key encryption
+	 * Used for encrypting key objects into byte array. Static encryption.
+	 * @param message
+	 * @param secretKey
+	 * @return byte[]
+	 */
+	public static byte[] encryptKey(byte[] publicKey, SecretKey secretKey) {
+		byte[] inputBytes = null;
+		try {
+			Cipher encryptCipher = Cipher.getInstance(ALGORITHM);
+			encryptCipher.init(Cipher.ENCRYPT_MODE, key);
+			inputBytes = encryptCipher.doFinal(publicKey);
+		} catch (IllegalBlockSizeException | BadPaddingException
+				| InvalidKeyException | NoSuchAlgorithmException
+				| NoSuchPaddingException e) {
+			e.printStackTrace();
+		}
+		return inputBytes;
+	}
+	
+	/**
+	 * Key decryption
+	 * Used for decrypting byte array into object. Static decryption.
+	 * @param cipherText
+	 * @param secretKey
+	 * @return byte[]
+	 */
+	public static byte[] decryptKey(byte[] cipherText, SecretKey secretKey) {
+		byte[] outputBytes = null;
+		try {
+			Cipher decryptCipher = Cipher.getInstance(ALGORITHM);
+			decryptCipher.init(Cipher.DECRYPT_MODE, secretKey);
+			outputBytes = decryptCipher.doFinal(cipherText);
+			return outputBytes;
+		} catch (IllegalBlockSizeException | BadPaddingException
+				| InvalidKeyException | NoSuchAlgorithmException
+				| NoSuchPaddingException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public String getKeyAsHex() {
 		String keyHex = Hex.encodeHexString(key.getEncoded());
 		return keyHex;
+	}
+
+	public SecretKey getKey() {
+		return key;
 	}
 
 	private static SecretKey generateKey() throws NoSuchAlgorithmException {

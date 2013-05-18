@@ -1,41 +1,45 @@
 package classes; 
 
-import hash_module.Digestor;
-
-import java.util.Collection;
-
-import certificate_authority.CertificateAuthority;
 import customer_side.Customer;
-import encryption_module.RSA;
-import encryption_module.TripleDES;
 
 public class Main {
 	public static void main(String[] args) {
-		RSA rsa = new RSA();
 		
-		String message = "The quick brown fox jumped over the lazy dog. 123ABC!@#$.";
-		System.out.println(message);
-		String hashed_message = Digestor.process(message);
-		System.out.println("Hashed message: " + hashed_message);
-		
-		Collection<String> cipherBlock = rsa.encrypt(hashed_message);
-		System.out.println("Cipher hash block: " + rsa.stringifyCipherMessage());
-		String decry = rsa.decryptMessage(cipherBlock, rsa.getPublicKey(), rsa.getModulus());
-		System.out.println("Decrypted message: " + decry);
+//		String message = "The quick brown fox jumped over the lazy dog. 123ABC!@#$.";
+//		System.out.println(message);
+//		String hashed_message = Digestor.process(message);
+//		System.out.println("Hashed message: " + hashed_message);
+//		
+//		Collection<String> cipherBlock = rsa.encrypt(hashed_message);
+//		System.out.println("Cipher hash block: " + rsa.stringifyCipherMessage());
+//		String decry = rsa.decryptMessage(cipherBlock, rsa.getPublicKey());
+//		System.out.println("Decrypted message: " + decry);
 
-		// rough implementation
-		System.out.println("\r\nMessage digest of OI/PI");
+//		System.out.println("\r\nMessage digest of OI/PI");
+//		Customer customer = new Customer();
+//		customer.digestPaymentOrder();
+//		
+//		System.out.println("\n");
+//		TripleDES tDES = new TripleDES();
+//		System.out.println("tDES key: " + tDES.getKeyAsHex());
+//		byte[] tdesMessage = tDES.encrypt(message);
+//		System.out.println(tDES.decrypt(tdesMessage));
+//		System.out.println("\n");
+		
+		// Customer and CA share secret key.
 		Customer customer = new Customer();
-		customer.digestPaymentOrder();
+		customer.establishSecret();
+		// Customer sends CA its public key (encrypted with the secret)
+		customer.requestCertificate();
+		// CA returns certificate encrypted with secret key
+
+		// Bank shares secret key with CA (for public key encryption)
 		
-		System.out.println("\n");
-		TripleDES tDES = new TripleDES();
-		System.out.println("tDES key: " + tDES.getKeyAsHex());
-		byte[] tdesMessage = tDES.encrypt(message);
-		System.out.println(tDES.decrypt(tdesMessage));
+		// Bank sends CA its public key
 		
-		System.out.println("\n");
-		CertificateAuthority.issueCertificate(rsa);
+		// CA returns certificate encrypted with its secret key
+		
+		// Bank shares shares another secret key with CA (for certificate)? what for?
 	}
 	
 	private void steps(){

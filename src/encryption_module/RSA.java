@@ -5,31 +5,29 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class RSA {
-	private BigInteger privateKey;
-	private BigInteger publicKey;
-	private BigInteger modulus;
+	private AsymmetricKey privateKey;
+	private AsymmetricKey publicKey;
 	
 	private Collection<String> cipherText;
 	
 	public RSA() {
 		KeyPair keyPair = new KeyPair();
-		modulus = keyPair.getModulus();
 		publicKey = keyPair.getPublicKey();
 		privateKey = keyPair.getPrivateKey();
 	}
 	
 	// c = cipher^privateKey mod n
 	private BigInteger encrypt(BigInteger message) {
-		return message.modPow(privateKey, modulus);
+		BigInteger exponent = privateKey.getExponent();
+		BigInteger modulus = privateKey.getModulus();
+		return message.modPow(exponent, modulus);
 	}
 	
 	// m = cipher^publicKey mod n
 	public BigInteger decrypt(BigInteger encrypted) {
-		return encrypted.modPow(publicKey, modulus);
-	}
-	
-	private BigInteger decrypt(BigInteger cipher, BigInteger publicKey, BigInteger modulus) {
-		return cipher.modPow(publicKey, modulus);
+		BigInteger exponent = publicKey.getExponent();
+		BigInteger modulus = publicKey.getModulus();
+		return encrypted.modPow(exponent, modulus);
 	}
 	
 	public Collection<String> encrypt(String message) {
@@ -43,11 +41,11 @@ public class RSA {
 		return cipherText;
 	}
 	
-	public String decryptMessage(Collection<String> cipherBlock, BigInteger publicKey, BigInteger modulus) {
+	public String decryptMessage(Collection<String> cipherBlock, AsymmetricKey publicKey) {
 		StringBuffer sb = new StringBuffer();
 		for (String hexPoint : cipherBlock) {
 			BigInteger cipherPoint = BigInteger.valueOf(Long.parseLong(hexPoint, 16));
-			Integer codePoint = decrypt(cipherPoint, publicKey, modulus).intValue();
+			Integer codePoint = decrypt(cipherPoint, publicKey).intValue();
 			sb.append(Character.toChars(codePoint));
 		}
 		return sb.toString();
@@ -61,21 +59,21 @@ public class RSA {
 		return sb.toString();
 	}
 
+	// TODO: print more verbose message
 	public void printDetails() {
 		System.out.println("Private key: " + privateKey);
 		System.out.println("Public key: " + publicKey);
-		System.out.println("Mod: " + modulus);
 	}
 	
-	public BigInteger getPublicKey() {
+	public AsymmetricKey getPublicKey() {
 		return publicKey;
-	}
-	
-	public BigInteger getModulus() {
-		return modulus;
 	}
 	
 	public String getAlgorithm(){
 		return "RSA";
+	}
+	
+	private BigInteger decrypt(BigInteger cipher, AsymmetricKey publicKey) {
+		return cipher.modPow(publicKey.getExponent(), publicKey.getModulus());
 	}
 }

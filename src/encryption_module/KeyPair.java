@@ -13,9 +13,8 @@ public class KeyPair {
 	private final static BigInteger one = new BigInteger("1");
 	private List<BigInteger[]> factors;
 	private static BigInteger k;
-	private BigInteger modulus;
-	private BigInteger publicKey;
-	private BigInteger privateKey;
+	private AsymmetricKey publicKey;
+	private AsymmetricKey privateKey;
 	
 	public KeyPair() {
 		k = new BigInteger("1");
@@ -23,16 +22,12 @@ public class KeyPair {
 		generateKeyPair();
 	}
 	
-	public BigInteger getModulus() {
-		return modulus;
-	}
-	
 	private void generateKeyPair() {
 		Primes primes = new Primes();
 		BigInteger p = primes.getLargePrime();
 		BigInteger q = primes.getSmallPrime();
 		
-		modulus = p.multiply(q);
+		BigInteger modulus = p.multiply(q);
 		BigInteger phi = (p.subtract(one)).multiply(q.subtract(one));
 		BigInteger keyPair;
 		
@@ -44,8 +39,8 @@ public class KeyPair {
 		
 		// Get the first set as they are the set of numbers which are farthest apart
 		BigInteger[] keys = factors.get(0);
-		publicKey = keys[0];
-		privateKey = keys[1];
+		publicKey = new AsymmetricKey(keys[0], modulus);
+		privateKey = new AsymmetricKey(keys[1], modulus);
 	}
 	
 	// Do not add 1 and itself as part of the candidates for key pairs
@@ -73,11 +68,11 @@ public class KeyPair {
 		}
 	}
 
-	public BigInteger getPublicKey() {
+	public AsymmetricKey getPublicKey() {
 		return publicKey;
 	}
 
-	public BigInteger getPrivateKey() {
+	public AsymmetricKey getPrivateKey() {
 		return privateKey;
 	}
 }

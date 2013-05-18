@@ -5,7 +5,6 @@ import hash_module.Digestor;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 
 public class DigitalSignature {
 	private static final String FILE_PATH = "/home/charles/devel/ns_set/files/ca";
@@ -14,12 +13,10 @@ public class DigitalSignature {
 	private String issuer = "Charles Shao";
 	private String algorithm = "RSA";
 	
-	private BigInteger publicKey;
-	private BigInteger modulus;
+	private AsymmetricKey publicKey;
 	
-	public DigitalSignature(BigInteger publicKey, BigInteger modulus) {
+	public DigitalSignature(AsymmetricKey publicKey) {
 		this.publicKey = publicKey;
-		this.modulus = modulus;
 	}
 	
 	public void setIssuer(String issuer){
@@ -50,12 +47,13 @@ public class DigitalSignature {
 		sb.append("\tName: " + BREAK);
 		sb.append("\tPublic Key Algorithm: " + algorithm + ": " + BREAK);
 		sb.append("\tPublic Key: " + BREAK);
-		sb.append("\t\tModulus: " + modulus + BREAK);
-		sb.append("\t\tExponent: " + publicKey + BREAK);
+		sb.append("\t\tModulus: " + publicKey.getModulus() + BREAK);
+		sb.append("\t\tExponent: " + publicKey.getExponent() + BREAK);
 
 		String hashSignature = Digestor.process(sb.toString());
 		sb.append("Thumbprint Algorithm: SHA1withRSAEncryption" + BREAK);
-		sb.append("\tThumbprint:" + hashSignature);
+		sb.append("\tThumbprint:" + BREAK);
+		sb.append("\t" + hashSignature);
 		writer.write(sb.toString());
 		writer.close();
 	}
