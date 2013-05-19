@@ -4,14 +4,18 @@ import hash_module.Digestor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Scanner;
 
 import javax.crypto.SecretKey;
 
+import merchant_side.Merchant;
 import certificate_authority.CertificateAuthority;
 import encryption_module.AsymmetricKey;
+import encryption_module.DigtialSignatureVerifier;
 import encryption_module.RSA;
 import encryption_module.TripleDES;
 
@@ -20,25 +24,41 @@ public class Customer {
 	private static final String PAYMENT_INFORMATION_PATH = "files/customer/payment_information.txt";
 	private static final String ORDER_INFORMATION_PATH = "files/customer/order_information.txt";
 	private static final String PUBLIC_KEY_CERTIFICATE_PATH = "files/customer/pk_certificate.ds";
+	private static final String DUAL_SIGNATURE_PATH = "files/customer/dual_signature.sig";
 	private Collection<String> PAYMENT_HASH;
 	private Collection<String> ORDER_HASH;
 
-	private RSA RSA;
+	private RSA rsa;
 	private AsymmetricKey publicKey;
-	private SecretKey secretKey;
-	private CertificateAuthority certificateAuthority;
+	private AsymmetricKey CA_publicKey;
+	private CertificateAuthority CA;
 
 	public Customer() {
-		RSA = new RSA();
+		rsa = new RSA();
 		PAYMENT_HASH = new ArrayList<String>();
 		ORDER_HASH = new ArrayList<String>();
-		publicKey = RSA.getPublicKey();
+		publicKey = rsa.getPublicKey();
+	}
+	
+	public void createDualSignature(){
+		PrintWriter writer = null;
+		String dualSignature = digestPaymentOrder();
+		
+		try {
+			writer = new PrintWriter(DUAL_SIGNATURE_PATH, "UTF-8");
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}	
+		
+		writer.write(dualSignature);
+		writer.close();
 	}
 
 	/**
 	 * Digest both PI and OI. Order of concatenation is MD(PI)||MD(OI)
+	 * @return PIMD||OIMD
 	 */
-	public void digestPaymentOrder() {
+	private String digestPaymentOrder() {
 		digestFile(PAYMENT_INFORMATION_PATH, PAYMENT_HASH);
 		digestFile(ORDER_INFORMATION_PATH, ORDER_HASH);
 
@@ -50,26 +70,10 @@ public class Customer {
 			messageDigest.append(hash);
 		}
 
-		// Rehash the message digest
 		String paymentOrder = Digestor.process(messageDigest.toString());
-
-		// Encrypt the hash with RSA
-		String encryptedString = RSA.encrypt(paymentOrder).serialize();
+		String encryptedPaymentOrder = rsa.encrypt(paymentOrder).serialize();
 		
-		// TODO: finish dual certificates
-		System.out.print(encryptedString);
-	}
-
-	public AsymmetricKey getPublicKey() {
-		return publicKey;
-	}
-
-	/**
-	 * Contact with CA and set up secret key
-	 */
-	public void establishSecret() {
-		certificateAuthority = new CertificateAuthority();
-		secretKey = certificateAuthority.getKey();
+		return encryptedPaymentOrder;
 	}
 
 	/**
@@ -77,21 +81,17 @@ public class Customer {
 	 * key. Decrypt the certificate with the secret.
 	 */
 	public void requestCertificate() {
-		certificateAuthority.createCertificate(publicKey, PUBLIC_KEY_CERTIFICATE_PATH);
+		CA = new CertificateAuthority();
+		CA.createCertificate(publicKey, PUBLIC_KEY_CERTIFICATE_PATH);
+		CA_publicKey = CA.getPublicKey();
 	}
-
-	/**
-	 * Encrypt public key using self secret key (TripleDES algorithm)
-	 * NOTE: May not need this.
-	 * @return
-	 */
-	public byte[] encryptPK() {
-		return TripleDES.encryptKey(publicKey.serialize(), secretKey);
+	
+	public AsymmetricKey getPublicKey() {
+		return publicKey;
 	}
 
 	/**
 	 * Encrypt public key given a secret key (TripleDES algorithm)
-	 * 
 	 * @param secretKey
 	 * @return
 	 */
@@ -100,19 +100,7 @@ public class Customer {
 	}
 
 	/**
-	 * Decrypt public key using self secret key (TripleDES algorithm)
-	 * 
-	 * @param cipherKey
-	 * @return
-	 */
-	public AsymmetricKey decryptPK(byte[] cipherKey) {
-		byte[] decryptedCipher = TripleDES.decryptKey(cipherKey, secretKey);
-		return (AsymmetricKey) AsymmetricKey.deserialize(decryptedCipher);
-	}
-
-	/**
 	 * Decrypt public key given a secret key (TripleDES algorithm)
-	 * 
 	 * @param cipherKey
 	 * @param secretKey
 	 * @return
@@ -120,6 +108,15 @@ public class Customer {
 	public AsymmetricKey decryptPK(byte[] cipherKey, SecretKey secretKey) {
 		byte[] decryptedCipher = TripleDES.decryptKey(cipherKey, secretKey);
 		return (AsymmetricKey) AsymmetricKey.deserialize(decryptedCipher);
+	}
+	
+	public Boolean verifyMerchant(Merchant merchant) {
+		AsymmetricKey merchantPublicKey = merchant.getPublicKey();
+		AsymmetricKey caPublicKey = merchant.getCAPublicKey();
+		File certificate = merchant.getCertificate();
+		
+		DigtialSignatureVerifier dsv = new DigtialSignatureVerifier(certificate, caPublicKey, merchantPublicKey);
+		return dsv.verify();
 	}
 
 	private void digestFile(String filename, Collection<String> hash) {

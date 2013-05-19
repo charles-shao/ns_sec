@@ -6,10 +6,10 @@ Certificate:
 		Not Before: Feb 7 12:00:00 2013 AEST
 		Not After : Feb 7 12:00:00 2014 AEST
 	Name: 
-	Public Key Algorithm: RSA: 
-	Public Key: 
-		Modulus: 8939081
-		Exponent: 5
+	Subject Public Key Algorithm: RSA: 
+	Subject Public Key: 
+		Modulus: 6562007
+		Exponent: 31
 Signature Algorithm: SHA1withRSAEncryption
 	Signature:
-		69bd5e7f783e488a0421bd8dca45488a044740667df3eb5444b17a23a26eb9f75444b17ee7a5559d08559d0869bd5e47406621bd87f783e559d084740667df3eb6eb9f721bd87f783edca455444b1559d08488a04dca45197122197122488a0469bd5e7df3eb21bd87df3eb488a04488a04474066
+		71a050:fc7f4:1fb7af:280fda:1fb7af:280fda:fc7f4:1be227:429317:71a050:6f43f:494cc0:fc7f4:429317:494cc0:4390b7:429317:494cc0:429317:2aa24c:500029:2aa24c:494cc0:4e7e3d:429317:a6a28:6f43f:1fb7af:4390b7:500029:4390b7:a6a28:494cc0:4390b7:4390b7:2aa24c:1fb7af:500029:494cc0:635e89

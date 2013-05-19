@@ -44,14 +44,15 @@ public class RSA {
 		cipherText = new ArrayList<String>();
 		for (int i = 0, n = message.length(); i < n; i++) {
 			Integer codePoint = message.codePointAt(i);
-		    BigInteger cipherPoint = encrypt(BigInteger.valueOf(codePoint));		    
+		    BigInteger cipherPoint = encrypt(BigInteger.valueOf(codePoint));	
 		    String hexString = Long.toHexString(cipherPoint.intValue());
 		    cipherText.add(hexString);
 		}
 		return this;
 	}
 	
-	public String decryptMessage(Collection<String> cipherBlock, AsymmetricKey publicKey) {
+	public static String decryptMessage(String message, AsymmetricKey publicKey) {
+		String[] cipherBlock = message.split(":");
 		StringBuffer sb = new StringBuffer();
 		for (String hexPoint : cipherBlock) {
 			BigInteger cipherPoint = BigInteger.valueOf(Long.parseLong(hexPoint, 16));
@@ -65,11 +66,12 @@ public class RSA {
 		StringBuffer sb = new StringBuffer();
 		for (String cipherPoint : cipherText) {
 			sb.append(cipherPoint);
+			sb.append(":");
 		}
+		sb.deleteCharAt(sb.length() - 1); // small hack - delete last delimiter
 		return sb.toString();
 	}
 
-	// TODO: print more verbose message
 	public void printDetails() {
 		System.out.println("Private key: " + privateKey);
 		System.out.println("Public key: " + publicKey);
@@ -83,7 +85,7 @@ public class RSA {
 		return "RSA";
 	}
 	
-	private BigInteger decrypt(BigInteger cipher, AsymmetricKey publicKey) {
+	private static BigInteger decrypt(BigInteger cipher, AsymmetricKey publicKey) {
 		return cipher.modPow(publicKey.getExponent(), publicKey.getModulus());
 	}
 }
