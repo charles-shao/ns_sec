@@ -17,8 +17,9 @@ import encryption_module.TripleDES;
 
 public class Customer {
 
-	private static final String PAYMENT_INFORMATION_PATH = "/home/charles/devel/ns_set/files/payment_information.txt";
-	private static final String ORDER_INFORMATION_PATH = "/home/charles/devel/ns_set/files/order_information.txt";
+	private static final String PAYMENT_INFORMATION_PATH = "files/customer/payment_information.txt";
+	private static final String ORDER_INFORMATION_PATH = "files/customer/order_information.txt";
+	private static final String PUBLIC_KEY_CERTIFICATE_PATH = "files/customer/pk_certificate.ds";
 	private Collection<String> PAYMENT_HASH;
 	private Collection<String> ORDER_HASH;
 
@@ -76,7 +77,7 @@ public class Customer {
 	 * key. Decrypt the certificate with the secret.
 	 */
 	public void requestCertificate() {
-		certificateAuthority.createCertificate(publicKey);
+		certificateAuthority.createCertificate(publicKey, PUBLIC_KEY_CERTIFICATE_PATH);
 	}
 
 	/**

@@ -10,8 +10,8 @@ import encryption_module.RSA;
 import encryption_module.TripleDES;
 
 public class CertificateAuthority {
-	private static final String FILE_PATH = "/home/charles/devel/ns_set/files/certificate_authority/ca";
-	private static final String CA_name = "Lock and Run";
+	private static final String CA_name = "Penguin Securities";
+	private String FILE_PATH = "files/certificate_authority/certificate.ds";
 	
 	private SecretKey secretKey;
 	private RSA RSA;
@@ -32,7 +32,9 @@ public class CertificateAuthority {
 	 * Certificate contains the requesters PK information
 	 * @param cipherPublicKey
 	 */
-	public void createCertificate(AsymmetricKey publicKey) {
+	public void createCertificate(AsymmetricKey publicKey, String filepath) {
+		FILE_PATH = filepath;
+		
 		DigitalSignature digitalSignature = new DigitalSignature(publicKey, RSA, CA_name);
 		digitalSignature.createDigitalSignature(FILE_PATH);
 	}

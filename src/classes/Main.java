@@ -4,7 +4,6 @@ import customer_side.Customer;
 
 public class Main {
 	public static void main(String[] args) {
-		
 //		String message = "The quick brown fox jumped over the lazy dog. 123ABC!@#$.";
 //		System.out.println(message);
 //		String hashed_message = Digestor.process(message);
@@ -32,12 +31,8 @@ public class Main {
 		// Customer sends CA its public key (encrypted with the secret)
 		// CA returns certificate encrypted with private key
 		customer.requestCertificate();
-
-
 		
-		// Bank shares secret key with CA (for public key encryption)
-		
-		// Bank sends CA its public key
+		// Bank sends CA its public key and signs in
 		
 		// CA returns certificate encrypted with its secret key
 		
