@@ -10,14 +10,14 @@ public class Merchant {
 
 	private static final String PUBLIC_KEY_CERTIFICATE_PATH = "files/merchant/pk_certificate.ds";
 
-	private RSA RSA;
+	private RSA rsa;
 	private AsymmetricKey publicKey;
 	private AsymmetricKey CA_publicKey;
 	private CertificateAuthority CA;
 
 	public Merchant() {
-		RSA = new RSA();
-		publicKey = RSA.getPublicKey();
+		rsa = new RSA();
+		publicKey = rsa.getPublicKey();
 	}
 
 	public AsymmetricKey getPublicKey() {

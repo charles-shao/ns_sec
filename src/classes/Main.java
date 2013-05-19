@@ -1,6 +1,7 @@
 package classes; 
 
 import merchant_side.Merchant;
+import bank_side.Bank;
 import customer_side.Customer;
 
 public class Main {
@@ -28,10 +29,12 @@ public class Main {
 	
 		Customer customer = setupCustomer();		
 		Merchant merchant = setupMerchant();
-		
+		Bank bank = setupBank();
 		if (customer.verifyMerchant(merchant)) {
-			
+			System.out.println("Good, we have verified the merchant");
 		}
+		
+		
 		// Customer creates dual signature with the order and payment information
 //		customer.createDualSignature();
 		// Customer sends the following to both bank and merchant: The dual signature
@@ -55,13 +58,15 @@ public class Main {
 	// 9. Merchant sends PIMD, its public key encrypted with TripleDES and its Digital Signature signed by its CA
 	// 10. Bank decrypts the public key with the shared secret (TripleDES), decrypts CA with the public key then...
 	
+	private static Bank setupBank() {
+		return null;
+	}
+
 	/**
 	 * Customer sends CA its public key and then digitally signed with the CA's private key
 	 * @return
 	 */
 	private static Customer setupCustomer(){
-		// Customer sends CA its public key (encrypted with the secret)
-		// CA returns certificate signed with its private key
 		Customer customer = new Customer();
 		customer.requestCertificate();
 		return customer;
