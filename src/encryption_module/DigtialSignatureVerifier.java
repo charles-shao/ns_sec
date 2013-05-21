@@ -49,7 +49,6 @@ public class DigtialSignatureVerifier {
 	private void readSignature(File certificate) {
 		Integer lineCount = 0;
 		Collection<String> contents = new ArrayList<String>();
-		;
 		try (Scanner scanner = new Scanner(certificate)) {
 			String line;
 			while (scanner.hasNextLine()) {

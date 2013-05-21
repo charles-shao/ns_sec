@@ -1,0 +1,15 @@
+Certificate:
+	Version: 0
+	Signature Algorithm: SHA1WithRSAEncryption
+	Issuer: Penguin Securities
+	Validity:
+		Not Before: Feb 7 12:00:00 2013 AEST
+		Not After : Feb 7 12:00:00 2014 AEST
+	Name: 
+	Subject Public Key Algorithm: RSA: 
+	Subject Public Key: 
+		Modulus: 6643943
+		Exponent: 7
+Signature Algorithm: SHA1withRSAEncryption
+	Signature:
+		4bbc79:754ee7:768897:11bf55:53ab7a:5857e7:6f8ed6:1c547f:754ee7:11bf55:67420:1c547f:5857e7:67420:11bf55:7075b9:768897:7075b9:1c547f:67420:2dc58c:6eff18:53ab7a:276d13:620aff:620aff:768897:276d13:7075b9:6f8ed6:768897:5857e7:4d71fa:4d71fa:768897:53ab7a:306c7a:53ab7a:1c547f:11bf55
