@@ -3,11 +3,18 @@ package classes;
 import java.io.File;
 
 import merchant_side.Merchant;
+import ui.Frame;
 import bank_side.Bank;
 import customer_side.Customer;
 
 public class Main {
+	public static Frame frame;
+	public static Logger logger;
 	public static void main(String[] args) {
+		logger = new Logger();
+		frame = new Frame();
+		frame.run();
+		
 		Customer customer = setupCustomer();
 		Merchant merchant = setupMerchant();
 		Bank bank = setupBank();
@@ -17,7 +24,7 @@ public class Main {
 		 * information
 		 */
 		File dualSignature = customer.createDualSignature().getDualSignature();
-
+		log("Dual Signature created at " + dualSignature.getAbsolutePath());
 		/*
 		 * Before sending the dual signature, verify the merchant
 		 */
@@ -34,7 +41,7 @@ public class Main {
 			 */
 			if (merchant.recieveOrder(dualSignature, customer.getPublicKey(),
 					customer.getEncryptedOI(), customer.getPIMD())) {
-				System.out.println("Merchant has confirmed the order.");
+				log("Merchant has confirmed the order.");
 			}
 
 		}
@@ -53,13 +60,9 @@ public class Main {
 			 */
 			if (bank.recievePayment(dualSignature, customer.getPublicKey(),
 					customer.getEncryptedPI(), customer.getOIMD())) {
-				System.out.println("Bank has confirmed the payment.");
+				log("Bank has confirmed the payment.");
 			}
 		}
-
-		/*
-		 * Merchant has to send PIMD to bank to verify
-		 */
 
 	}
 
@@ -85,5 +88,10 @@ public class Main {
 		Bank bank = new Bank();
 		bank.requestCertificate();
 		return bank;
+	}
+	
+	private static void log(String m) {
+		logger.log(m);
+		frame.console(logger.spit());	
 	}
 }

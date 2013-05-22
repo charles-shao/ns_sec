@@ -1,30 +1,31 @@
 package ui;
-import javax.swing.*;  
+
+import java.awt.EventQueue;
 
 public class Frame {
 	
+	SETFrame window;
 	public Frame() {
 	}
-	
-    public void run() {
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        });
-    }
-    
-    private static void createAndShowGUI() {
-        JFrame frame = new JFrame("NS SET");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 
-        JLabel label = new JLabel("Secure Electronic Transaction");
-        frame.getContentPane().add(label);
 
-        frame.pack();
-        frame.setVisible(true);
-    }
- 
+	/**
+	 * Launch the application.
+	 */
+	public void run() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					window = new SETFrame();
+					window.frmSecureElectronicTransaction.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	public void console(String log) {
+		window.console(log);
+	}
+
 }
