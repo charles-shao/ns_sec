@@ -1,19 +1,20 @@
 package classes;
 
+import java.awt.EventQueue;
 import java.io.File;
 
-import merchant_side.Merchant;
-import ui.Frame;
-import bank_side.Bank;
-import customer_side.Customer;
+import merchant_module.Merchant;
+import ui.SETFrame;
+import bank_module.Bank;
+import customer_module.Customer;
 
 public class Main {
-	public static Frame frame;
-	public static Logger logger;
+	public static SETFrame WINDOW_FRAME;
+	public static Logger LOG;
+	
 	public static void main(String[] args) {
-		logger = new Logger();
-		frame = new Frame();
-		frame.run();
+		LOG = new Logger();
+		run();
 		
 		Customer customer = setupCustomer();
 		Merchant merchant = setupMerchant();
@@ -39,7 +40,7 @@ public class Main {
 			 * encrypted with TripleDES. If it checks out then the order
 			 * registration is successful
 			 */
-			if (merchant.recieveOrder(dualSignature, customer.getPublicKey(),
+			if (merchant.recieveTransaction(dualSignature, customer.getPublicKey(),
 					customer.getEncryptedOI(), customer.getPIMD())) {
 				log("Merchant has confirmed the order.");
 			}
@@ -58,7 +59,7 @@ public class Main {
 			 * encrypted with TripleDES. If it checks out then the payment
 			 * registration is successful
 			 */
-			if (bank.recievePayment(dualSignature, customer.getPublicKey(),
+			if (bank.recieveTransaction(dualSignature, customer.getPublicKey(),
 					customer.getEncryptedPI(), customer.getOIMD())) {
 				log("Bank has confirmed the payment.");
 			}
@@ -91,7 +92,23 @@ public class Main {
 	}
 	
 	private static void log(String m) {
-		logger.log(m);
-		frame.console(logger.spit());	
+		LOG.log(m);
+		WINDOW_FRAME.console(LOG.spit());	
+	}
+	
+	/**
+	 * UI interface link
+	 */
+	private static void run() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					WINDOW_FRAME = new SETFrame();
+					WINDOW_FRAME.getFrmSecureElectronicTransaction().setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }

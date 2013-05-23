@@ -72,8 +72,10 @@ public class DigtialSignatureVerifier {
 	private void hashContents(Collection<String> contents) {
 		StringBuffer sb = new StringBuffer();
 		for (String line : contents) {
-			// TODO: refactor so that printed data is different from encrypted
-			// data
+			/*
+			 * TODO: refactor so that printed data is different from encrypted
+			 * data
+			 */
 			sb.append(line + "\r\n");
 		}
 		HASHED_CERTIFICATE = Digestor.process(sb.toString());

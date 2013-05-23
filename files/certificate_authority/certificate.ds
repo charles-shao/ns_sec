@@ -1,15 +1,15 @@
 Certificate:
 	Version: 0
 	Signature Algorithm: SHA1WithRSAEncryption
-	Issuer: Lock and Run
+	Issuer: Penguin Securities
 	Validity:
 		Not Before: Feb 7 12:00:00 2013 AEST
 		Not After : Feb 7 12:00:00 2014 AEST
 	Name: 
-	Public Key Algorithm: RSA: 
-	Public Key: 
-		Modulus: 11751563
-		Exponent: 7
+	Subject Public Key Algorithm: RSA: 
+	Subject Public Key: 
+		Modulus: 10265471
+		Exponent: 5
 Signature Algorithm: SHA1withRSAEncryption
 	Signature:
-		685a2153c79b50afb27964e07964e053c79b50afb2208d7f731da188a95850afb24b642f50afb234843f1574c163481f1071bc50afb2541892273918208d7f4b642f7964e01574c11574c11574c15418923a1d25418927964e088a9587964e034843f88a95827391834843f731da1208d7f4b642f1574c1
+		5a2590:4e8e0:8c0630:4916d2:43de18:b4bcd:233a42:a1e8d8:5d8473:233a42:5a2590:3e77c6:43de18:3e77c6:3a67f9:83a227:5a2590:767b79:5a2590:3a67f9:5a2590:b4bcd:233a42:767b79:4e8e0:233a42:4c1096:83a227:35bf64:233a42:a1e8d8:4c1096:233a42:5a2590:4e8e0:43de18:b4bcd:83a227:5a2590:43de18

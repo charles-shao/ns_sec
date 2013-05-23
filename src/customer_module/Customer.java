@@ -1,4 +1,4 @@
-package customer_side;
+package customer_module;
 
 import hash_module.Digestor;
 
@@ -12,8 +12,8 @@ import java.util.Scanner;
 
 import javax.crypto.SecretKey;
 
-import merchant_side.Merchant;
-import bank_side.Bank;
+import merchant_module.Merchant;
+import bank_module.Bank;
 import certificate_authority.CertificateAuthority;
 import encryption_module.AsymmetricKey;
 import encryption_module.DigtialSignatureVerifier;
@@ -29,17 +29,17 @@ public class Customer {
 	private Collection<String> PAYMENT_HASH;
 	private Collection<String> ORDER_HASH;
 
-	private RSA rsa;
-	private TripleDES tdes;
-	private AsymmetricKey publicKey;
+	private RSA _RSA;
+	private TripleDES TDES;
+	private AsymmetricKey PUBLIC_KEY;
 	private CertificateAuthority CA;
 
 	public Customer() {
-		rsa = new RSA();
-		tdes = new TripleDES();
+		_RSA = new RSA();
+		TDES = new TripleDES();
 		PAYMENT_HASH = new ArrayList<String>();
 		ORDER_HASH = new ArrayList<String>();
-		publicKey = rsa.getPublicKey();
+		PUBLIC_KEY = _RSA.getPublicKey();
 	}
 
 	/**
@@ -90,15 +90,15 @@ public class Customer {
 	 */
 	public void requestCertificate() {
 		CA = new CertificateAuthority();
-		CA.createCertificate(publicKey, PUBLIC_KEY_CERTIFICATE_PATH);
+		CA.createCertificate(PUBLIC_KEY, PUBLIC_KEY_CERTIFICATE_PATH);
 	}
 
 	public AsymmetricKey getPublicKey() {
-		return publicKey;
+		return PUBLIC_KEY;
 	}
 
 	public SecretKey getSecretKey() {
-		return tdes.getKey();
+		return TDES.getKey();
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class Customer {
 	 * @return
 	 */
 	public byte[] encryptPK(SecretKey secretKey) {
-		return TripleDES.encryptKey(publicKey.serialize(), secretKey);
+		return TripleDES.encryptKey(PUBLIC_KEY.serialize(), secretKey);
 	}
 
 	/**
@@ -167,7 +167,7 @@ public class Customer {
 		}
 
 		String paymentOrder = Digestor.process(messageDigest.toString());
-		String encryptedPaymentOrder = rsa.encrypt(paymentOrder).serialize();
+		String encryptedPaymentOrder = _RSA.encrypt(paymentOrder).serialize();
 
 		return encryptedPaymentOrder;
 	}
@@ -191,7 +191,7 @@ public class Customer {
 			String line;
 			while (scanner.hasNextLine()) {
 				line = scanner.nextLine();
-				byte[] cipher = tdes.encrypt(line);
+				byte[] cipher = TDES.encrypt(line);
 				encryptedCollection.add(cipher);
 			}
 			scanner.close();
