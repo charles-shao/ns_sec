@@ -21,6 +21,15 @@ public class KeyPair {
 		factors = new ArrayList<BigInteger[]>();
 		generateKeyPair();
 	}
+	
+	/**
+	 * TODO: Generate KeyPair with a given set of prime numbers
+	 * @param primeOne
+	 * @param primeTwo
+	 */
+	public KeyPair(BigInteger primeOne, BigInteger primeTwo) {
+		
+	}
 
 	private void generateKeyPair() {
 		Primes primes = new Primes();

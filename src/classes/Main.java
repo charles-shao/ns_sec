@@ -8,14 +8,19 @@ import ui.SETFrame;
 import bank_module.Bank;
 import customer_module.Customer;
 
-public class Main {
-	public static SETFrame WINDOW_FRAME;
-	public static Logger LOG;
-	
-	public static void main(String[] args) {
-		LOG = new Logger();
-		run();
+public class Main extends Thread {
+	public static void main(String[] args) throws InterruptedException {
+		runInterface();
 		
+		/*
+		 * Wait for the UI thread to finish drawing before working
+		 */
+		Thread.sleep(500);
+
+		
+		/*
+		 * Create entities and set up their certificates
+		 */
 		Customer customer = setupCustomer();
 		Merchant merchant = setupMerchant();
 		Bank bank = setupBank();
@@ -24,8 +29,9 @@ public class Main {
 		 * Customer creates dual signature with the order and payment
 		 * information
 		 */
+		Logger.write("Creating dual signature...");
 		File dualSignature = customer.createDualSignature().getDualSignature();
-		log("Dual Signature created at " + dualSignature.getAbsolutePath());
+		Logger.write("Dual signature sucessfully created.");
 		/*
 		 * Before sending the dual signature, verify the merchant
 		 */
@@ -42,7 +48,7 @@ public class Main {
 			 */
 			if (merchant.recieveTransaction(dualSignature, customer.getPublicKey(),
 					customer.getEncryptedOI(), customer.getPIMD())) {
-				log("Merchant has confirmed the order.");
+				Logger.write("Merchant has confirmed the order.");
 			}
 
 		}
@@ -61,12 +67,12 @@ public class Main {
 			 */
 			if (bank.recieveTransaction(dualSignature, customer.getPublicKey(),
 					customer.getEncryptedPI(), customer.getOIMD())) {
-				log("Bank has confirmed the payment.");
+				Logger.write("Bank has confirmed the payment.");
 			}
 		}
 
 	}
-
+	
 	/**
 	 * Customer sends CA its public key and then digitally signed with the CA's
 	 * private key
@@ -91,20 +97,17 @@ public class Main {
 		return bank;
 	}
 	
-	private static void log(String m) {
-		LOG.log(m);
-		WINDOW_FRAME.console(LOG.spit());	
-	}
-	
 	/**
 	 * UI interface link
 	 */
-	private static void run() {
+	private static void runInterface() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					WINDOW_FRAME = new SETFrame();
-					WINDOW_FRAME.getFrmSecureElectronicTransaction().setVisible(true);
+					SETFrame frame = new SETFrame();
+					frame.getFrmSecureElectronicTransaction().setVisible(true);
+
+					Logger.setFrame(frame);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

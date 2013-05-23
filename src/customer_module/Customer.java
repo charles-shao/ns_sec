@@ -12,6 +12,8 @@ import java.util.Scanner;
 
 import javax.crypto.SecretKey;
 
+import classes.Logger;
+
 import merchant_module.Merchant;
 import bank_module.Bank;
 import certificate_authority.CertificateAuthority;
@@ -50,7 +52,8 @@ public class Customer {
 	public Customer createDualSignature() {
 		PrintWriter writer = null;
 		String dualSignature = digestPaymentOrder();
-
+		
+		Logger.write("Dual Signature RSAwithSHA1:\n" + dualSignature + "\n");
 		try {
 			writer = new PrintWriter(DUAL_SIGNATURE_PATH, "UTF-8");
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
