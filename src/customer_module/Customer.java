@@ -51,6 +51,7 @@ public class Customer {
 	 */
 	public Customer createDualSignature() {
 		PrintWriter writer = null;
+		Logger.write("Hashing payment and order information.");
 		String dualSignature = digestPaymentOrder();
 		
 		Logger.write("Dual Signature RSAwithSHA1:\n" + dualSignature + "\n");
@@ -158,9 +159,13 @@ public class Customer {
 	 * @return PIMD||OIMD
 	 */
 	private String digestPaymentOrder() {
+		Logger.write("\nPayment information:");
+		Logger.write("=======================================================");
 		digestFile(PAYMENT_INFORMATION_PATH, PAYMENT_HASH);
+		Logger.write("\nOrder information:");
+		Logger.write("=======================================================");
 		digestFile(ORDER_INFORMATION_PATH, ORDER_HASH);
-
+		
 		StringBuffer messageDigest = new StringBuffer();
 		for (String hash : PAYMENT_HASH) {
 			messageDigest.append(hash);
@@ -168,10 +173,11 @@ public class Customer {
 		for (String hash : ORDER_HASH) {
 			messageDigest.append(hash);
 		}
-
+		
 		String paymentOrder = Digestor.process(messageDigest.toString());
+		Logger.write("\nMessage digest of PI || OI: \n" + paymentOrder);
 		String encryptedPaymentOrder = _RSA.encrypt(paymentOrder).serialize();
-
+		Logger.write("\nRSA encryption of MD(PI) || MD(OI): \n" + encryptedPaymentOrder);
 		return encryptedPaymentOrder;
 	}
 
@@ -180,6 +186,7 @@ public class Customer {
 			String line;
 			while (scanner.hasNextLine()) {
 				line = scanner.nextLine();
+				Logger.write(line);
 				hash.add(Digestor.process(line));
 			}
 			scanner.close();

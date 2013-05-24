@@ -8,8 +8,8 @@ Certificate:
 	Name: 
 	Subject Public Key Algorithm: RSA: 
 	Subject Public Key: 
-		Modulus: 12456377
-		Exponent: 163
+		Modulus: 6518207
+		Exponent: 47
 Signature Algorithm: SHA1withRSAEncryption
 	Signature:
-		3f767c:5ec8f0:557485:3267db:28dea:5ec8f0:693d66:38591:28dea:6a2e67:4f4fdd:2fe339:56c162:38591:1fd176:6e8bf0:6a2e67:6e8bf0:644d15:4f4fdd:693d66:1fd176:4f4fdd:1fd176:4f4fdd:6e8bf0:4f4fdd:693d66:3267db:5ec8f0:5ec8f0:5ec8f0:1fd176:38591:5ec8f0:557485:644d15:644d15:2bda4d:4f4fdd
+		d284c6:77e456:77e456:7d9802:9fae4f:463bfb:463bfb:ce51e:c2bc05:18ed72:70bf04:c2bc05:7c9f00:a4bf5c:d284c6:7c9f00:463bfb:70bf04:9fae4f:7c9f00:a1e8d9:a1e8d9:cd6f59:7c9f00:cd6f59:70bf04:c2bc05:bbdb34:a1e8d9:d284c6:70bf04:b6a720:a1e8d9:7c9f00:463bfb:48c5fe:70bf04:ce51e:d284c6:cd6f59
