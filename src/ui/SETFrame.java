@@ -19,9 +19,7 @@ import com.jgoodies.forms.layout.RowSpec;
 
 import encryption_module.Primes;
 
-public class SETFrame extends JFrame implements ActionListener {
-
-	private static final long serialVersionUID = 1L;
+public class SETFrame extends SETImpl implements ActionListener {
 
 	private JFrame frmSecureElectronicTransaction;
 	private JTextField prime1;
@@ -33,12 +31,22 @@ public class SETFrame extends JFrame implements ActionListener {
 	private JButton btnCreateDualSignature;
 	private JButton btnVerifyMerchant;
 	private JButton btnVerifyBank;
-	private JButton btnEstablishSecret;
+	private JButton btnSymmetricKeyMerchant;
+	
+	private SETImpl setImpl;
+	private JButton btnClearLog;
+	private JButton btnTradeSymmeticKeyBank;
+	private JLabel lblBankActions;
+	private JLabel lblMerchantActions;
+	private JLabel lblConsoleLog;
+	private JButton btnSendOrderDetails;
+	private JButton btnSendPaymentDetails;
 
 	/**
 	 * Create the application.
 	 */
 	public SETFrame() {
+		setImpl = new SETImpl();
 		initialize();
 	}
 
@@ -61,7 +69,7 @@ public class SETFrame extends JFrame implements ActionListener {
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 				ColumnSpec.decode("50dlu"),
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-				ColumnSpec.decode("100dlu"),
+				ColumnSpec.decode("100dlu:grow"),
 				FormFactory.RELATED_GAP_COLSPEC,
 				FormFactory.DEFAULT_COLSPEC,
 				FormFactory.RELATED_GAP_COLSPEC,
@@ -73,6 +81,11 @@ public class SETFrame extends JFrame implements ActionListener {
 				RowSpec.decode("15dlu"),
 				RowSpec.decode("15dlu"),
 				RowSpec.decode("150dlu"),
+				RowSpec.decode("15dlu"),
+				RowSpec.decode("15dlu"),
+				RowSpec.decode("15dlu"),
+				RowSpec.decode("15dlu"),
+				RowSpec.decode("15dlu"),
 				RowSpec.decode("15dlu"),
 				RowSpec.decode("15dlu"),
 				RowSpec.decode("15dlu"),
@@ -99,34 +112,59 @@ public class SETFrame extends JFrame implements ActionListener {
 				getFrmSecureElectronicTransaction().getContentPane().add(btnKeyPair,
 						"8, 3");
 				btnKeyPair.addActionListener(this);
+		
+		lblConsoleLog = new JLabel("Console log");
+		frmSecureElectronicTransaction.getContentPane().add(lblConsoleLog, "2, 4");
 
 		consolePane = new JScrollPane();
 		frmSecureElectronicTransaction.getContentPane().add(consolePane,
 				"2, 5, 7, 1, fill, fill");
 
 		console = new JTextPane();
-		console.setText("Initializing...");
 		consolePane.setViewportView(console);
 		
 		btnSetEntitiesUp = new JButton("Set entities up");
 		btnSetEntitiesUp.addActionListener(this);
+		
+		btnClearLog = new JButton("Clear log");
+		btnClearLog.addActionListener(this);
+		
+		frmSecureElectronicTransaction.getContentPane().add(btnClearLog, "8, 6");
 		frmSecureElectronicTransaction.getContentPane().add(btnSetEntitiesUp, "2, 7");
 		
 		btnCreateDualSignature = new JButton("Create dual signature");
 		btnCreateDualSignature.addActionListener(this);
 		frmSecureElectronicTransaction.getContentPane().add(btnCreateDualSignature, "2, 8");
 		
-		btnVerifyMerchant = new JButton("Verify merchant");
-		btnVerifyMerchant.addActionListener(this);
-		frmSecureElectronicTransaction.getContentPane().add(btnVerifyMerchant, "2, 9");
-		
-		btnEstablishSecret = new JButton("Establish secret");
-		btnEstablishSecret.addActionListener(this);
-		frmSecureElectronicTransaction.getContentPane().add(btnEstablishSecret, "4, 9, 3, 1");
-		
 		btnVerifyBank = new JButton("Verify bank");
 		btnVerifyBank.addActionListener(this);
-		frmSecureElectronicTransaction.getContentPane().add(btnVerifyBank, "2, 10");
+		
+		btnVerifyMerchant = new JButton("Verify merchant");
+		btnVerifyMerchant.addActionListener(this);
+		
+		lblMerchantActions = new JLabel("Merchant actions");
+		frmSecureElectronicTransaction.getContentPane().add(lblMerchantActions, "2, 10");
+		frmSecureElectronicTransaction.getContentPane().add(btnVerifyMerchant, "2, 11");
+		
+		btnSymmetricKeyMerchant = new JButton("Trade symmetric key secret");
+		btnSymmetricKeyMerchant.addActionListener(this);
+		frmSecureElectronicTransaction.getContentPane().add(btnSymmetricKeyMerchant, "4, 11, 3, 1");
+		
+		btnSendOrderDetails = new JButton("Send order details");
+		btnSendOrderDetails.addActionListener(this);
+		frmSecureElectronicTransaction.getContentPane().add(btnSendOrderDetails, "8, 11");
+		
+		lblBankActions = new JLabel("Bank actions");
+		frmSecureElectronicTransaction.getContentPane().add(lblBankActions, "2, 12");
+		frmSecureElectronicTransaction.getContentPane().add(btnVerifyBank, "2, 13");
+		
+		btnTradeSymmeticKeyBank = new JButton("Trade symmetric key secret");
+		btnTradeSymmeticKeyBank.addActionListener(this);
+		frmSecureElectronicTransaction.getContentPane().add(btnTradeSymmeticKeyBank, "4, 13, 3, 1");
+		
+		btnSendPaymentDetails = new JButton("Send payment details");
+		btnSendPaymentDetails.addActionListener(this);
+		frmSecureElectronicTransaction.getContentPane().add(btnSendPaymentDetails, "8, 13");
 	}
 
 	public void console(String log) {
@@ -135,26 +173,45 @@ public class SETFrame extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent evt) {
 		Object src = evt.getSource();
+		
 		if (src == btnKeyPair) {
 			Primes prime = new Primes();
 			System.out.println(prime.getLargePrime());
-		}
-		
-		if (src == btnSetEntitiesUp) {
-			Logger.write("Setting the entities up...");
-			System.out.println("works?");
-		}
-		
-		if (src == btnCreateDualSignature) {
-			Logger.write("Creating dual signature...");
-		}
-		
-		if (src == btnVerifyMerchant) {
+		} else if (src == btnSetEntitiesUp) {
+			setImpl.setupCustomer();
+			setImpl.setupMerchant();
+			setImpl.setupBank();
+		} else if (src == btnCreateDualSignature) {
+			try {
+				setImpl.createDualSignature();	
+			} catch (Exception e) {
+				Logger.write("Cannot create dual signature without the customer entity!");
+			}
+		} else if (src == btnVerifyMerchant) {
 			Logger.write("Verifying merchant via certificate authority...");
-		}
-		
-		if (src == btnVerifyBank) {
+			try {
+				setImpl.verifyMerchant();	
+			} catch (Exception e) {
+				Logger.write("Cannot verify merchant without the merchant entity!");
+			}
+			
+		} else if (src == btnVerifyBank) {
 			Logger.write("Verifying bank via certificate authority...");
+			try {
+				setImpl.verifyBank();	
+			} catch (Exception e) {
+				Logger.write("Cannot verify bank without the bank entity!");
+			}
+		} else if (src == btnClearLog) {
+			Logger.clear();
+		} else if (src == btnSymmetricKeyMerchant) {
+			setImpl.establishMerchantSecret();
+		} else if (src == btnTradeSymmeticKeyBank) {
+			setImpl.establishBankSecret();
+		} else if (src == btnSendOrderDetails) {
+			setImpl.sendOrder();
+		} else if (src == btnSendPaymentDetails) {
+			setImpl.sendPayment();
 		}
 	}
 

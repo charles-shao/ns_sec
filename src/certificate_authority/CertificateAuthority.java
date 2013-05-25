@@ -2,6 +2,8 @@ package certificate_authority;
 
 import java.io.File;
 
+import classes.Logger;
+
 import encryption_module.AsymmetricKey;
 import encryption_module.DigitalSignature;
 import encryption_module.RSA;
@@ -13,6 +15,7 @@ public class CertificateAuthority {
 	private RSA RSA;
 	
 	public CertificateAuthority() {
+		Logger.write("CA: Generating RSA key pairs...");
 		RSA = new RSA();
 	}
 	

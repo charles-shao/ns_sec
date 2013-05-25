@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
+import classes.Logger;
+
 public class DigitalSignature {
 	private static final String BREAK = "\r\n";
 
@@ -24,7 +26,9 @@ public class DigitalSignature {
 		this.issuer = issuer;
 	}
 
-	public void createDigitalSignature(String filepath) {
+	public void createDigitalSignature(String filepath) 
+	{
+		Logger.write("CA generating signature. Signing requesters public key...");
 		PrintWriter writer = null;
 
 		try {
@@ -49,8 +53,11 @@ public class DigitalSignature {
 		sb.append("\t\tExponent: " + publicKey.getExponent() + BREAK);
 		
 		String hashSignature = Digestor.process(sb.toString());
+		Logger.write("\tHash created using SHA1");
+		Logger.write("\t\t" + hashSignature);
 		String encryptedSignature = rsa.encrypt(hashSignature).serialize();
-
+		Logger.write("\tEncrypted hash with CA private key");
+		
 		sb.append("Signature Algorithm: SHA1withRSAEncryption" + BREAK);
 		sb.append("\tSignature:" + BREAK);
 		sb.append("\t\t" + encryptedSignature);

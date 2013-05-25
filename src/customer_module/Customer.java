@@ -37,11 +37,14 @@ public class Customer {
 	private CertificateAuthority CA;
 
 	public Customer() {
+		Logger.write("Customer: Generating RSA key pairs...");
 		_RSA = new RSA();
+		Logger.write("Generating TripleDES secret key...");
 		TDES = new TripleDES();
 		PAYMENT_HASH = new ArrayList<String>();
 		ORDER_HASH = new ArrayList<String>();
 		PUBLIC_KEY = _RSA.getPublicKey();
+		Logger.write("Key generation successful. Using RSA and TripleDES encryption.\n");
 	}
 
 	/**
@@ -93,7 +96,9 @@ public class Customer {
 	 * key. Decrypt the certificate with the secret.
 	 */
 	public void requestCertificate() {
+		Logger.write("Getting digital certificate from cerfiticate authority...");
 		CA = new CertificateAuthority();
+		Logger.write("Customer sending public key to certificate authority...");
 		CA.createCertificate(PUBLIC_KEY, PUBLIC_KEY_CERTIFICATE_PATH);
 	}
 

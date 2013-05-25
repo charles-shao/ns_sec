@@ -17,7 +17,9 @@ public class Main extends Thread {
 		 */
 		Thread.sleep(500);
 
-		
+	}
+	
+	private static void tmp() {
 		/*
 		 * Create entities and set up their certificates
 		 */
@@ -69,8 +71,7 @@ public class Main extends Thread {
 					customer.getEncryptedPI(), customer.getOIMD())) {
 				Logger.write("Bank has confirmed the payment.");
 			}
-		}
-
+		}	
 	}
 	
 	/**

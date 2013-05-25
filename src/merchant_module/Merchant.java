@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.Collection;
 
 import classes.Entity;
+import classes.Logger;
 import encryption_module.AsymmetricKey;
 import encryption_module.RSA;
 
@@ -13,8 +14,10 @@ public class Merchant extends Entity {
 
 	public Merchant() {
 		CERTIFICATE_PATH = "files/merchant/pk_certificate.ds";
+		Logger.write("Merchant: Generating RSA key pairs...");
 		_RSA = new RSA();
 		PUBLIC_KEY = _RSA.getPublicKey();
+		Logger.write("Key generation successful. Using RSA encryption.\n");
 	}
 	
 	@Override

@@ -4,6 +4,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import classes.Logger;
+
 /**
  * KeyPair
  * Key pairs e and d. Algorithm used: e.d = k.(p - 1).(q - 1) + 1 where k is any
@@ -35,8 +37,10 @@ public class KeyPair {
 		Primes primes = new Primes();
 		BigInteger p = primes.getLargePrime();
 		BigInteger q = primes.getSmallPrime();
+		Logger.write("\tPrime number pair: " + p + ", " + q);
 
 		BigInteger modulus = p.multiply(q);
+		Logger.write("\tModulus: " + modulus);
 		BigInteger phi = (p.subtract(one)).multiply(q.subtract(one));
 		BigInteger keyPair;
 
@@ -52,15 +56,17 @@ public class KeyPair {
 		 */
 		BigInteger[] keys = factors.get(0);
 		publicKey = new AsymmetricKey(keys[0], modulus);
+		Logger.write("\tPublic key (d, n): (" + publicKey.getExponent() + ", " + publicKey.getModulus() + ")");
 		privateKey = new AsymmetricKey(keys[1], modulus);
+		Logger.write("\tPrivate key (e, n): (" + privateKey.getExponent() + ", " + privateKey.getModulus() + ")");
 	}
 
 	/**
-	 * Get Factors Does not add 1 and itself as part of the candidates for key
+	 * Get Factors does not add 1 and itself as part of the candidates for key
 	 * pairs
 	 * 
 	 * @param value
-	 * @return
+	 * @return boolean
 	 */
 	private boolean getFactors(int value) {
 		BigInteger[] pair;

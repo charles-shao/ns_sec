@@ -25,4 +25,9 @@ public class Logger {
 		}
 		FRAME.console(sb.toString());	
 	}
+
+	public static void clear() {
+		LOG.clear();
+		print();
+	}
 }
