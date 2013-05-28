@@ -107,49 +107,6 @@ public class TripleDES {
 		}
 		return null;
 	}
-	
-	/**
-	 * Key encryption
-	 * Used for encrypting key objects into byte array. Static encryption.
-	 * @param message
-	 * @param secretKey
-	 * @return byte[]
-	 */
-	public static byte[] encryptKey(byte[] publicKey, SecretKey secretKey) {
-		byte[] inputBytes = null;
-		try {
-			Cipher encryptCipher = Cipher.getInstance(ALGORITHM);
-			encryptCipher.init(Cipher.ENCRYPT_MODE, key);
-			inputBytes = encryptCipher.doFinal(publicKey);
-		} catch (IllegalBlockSizeException | BadPaddingException
-				| InvalidKeyException | NoSuchAlgorithmException
-				| NoSuchPaddingException e) {
-			e.printStackTrace();
-		}
-		return inputBytes;
-	}
-	
-	/**
-	 * Key decryption
-	 * Used for decrypting byte array into object. Static decryption.
-	 * @param cipherText
-	 * @param secretKey
-	 * @return byte[]
-	 */
-	public static byte[] decryptKey(byte[] cipherText, SecretKey secretKey) {
-		byte[] outputBytes = null;
-		try {
-			Cipher decryptCipher = Cipher.getInstance(ALGORITHM);
-			decryptCipher.init(Cipher.DECRYPT_MODE, secretKey);
-			outputBytes = decryptCipher.doFinal(cipherText);
-			return outputBytes;
-		} catch (IllegalBlockSizeException | BadPaddingException
-				| InvalidKeyException | NoSuchAlgorithmException
-				| NoSuchPaddingException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	public String getKeyAsHex() {
 		String keyHex = Hex.encodeHexString(key.getEncoded());

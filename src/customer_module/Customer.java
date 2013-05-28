@@ -10,13 +10,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Scanner;
 
-import javax.crypto.SecretKey;
-
-import classes.Logger;
-
 import merchant_module.Merchant;
 import bank_module.Bank;
 import certificate_authority.CertificateAuthority;
+import classes.Logger;
 import encryption_module.AsymmetricKey;
 import encryption_module.DigtialSignatureVerifier;
 import encryption_module.RSA;
@@ -106,32 +103,14 @@ public class Customer {
 		return PUBLIC_KEY;
 	}
 
-	public SecretKey getSecretKey() {
-		return TDES.getKey();
-	}
-
 	/**
-	 * Encrypt public key given a secret key (TripleDES algorithm)
-	 * 
-	 * @param secretKey
+	 * Encrypt TripleDES secret with private key
 	 * @return
 	 */
-	public byte[] encryptPK(SecretKey secretKey) {
-		return TripleDES.encryptKey(PUBLIC_KEY.serialize(), secretKey);
+	public byte[] getSecretKey() {
+		return _RSA.encryptSecretKey(TDES.getKey());
 	}
-
-	/**
-	 * Decrypt public key given a secret key (TripleDES algorithm)
-	 * 
-	 * @param cipherKey
-	 * @param secretKey
-	 * @return
-	 */
-	public AsymmetricKey decryptPK(byte[] cipherKey, SecretKey secretKey) {
-		byte[] decryptedCipher = TripleDES.decryptKey(cipherKey, secretKey);
-		return (AsymmetricKey) AsymmetricKey.deserialize(decryptedCipher);
-	}
-
+	
 	/**
 	 * Verify the merchant by checking their certificate and their PK
 	 * 
@@ -181,7 +160,7 @@ public class Customer {
 		
 		String paymentOrder = Digestor.process(messageDigest.toString());
 		Logger.write("\nMessage digest of PI || OI: \n" + paymentOrder);
-		String encryptedPaymentOrder = _RSA.encrypt(paymentOrder).serialize();
+		String encryptedPaymentOrder = _RSA.encryptMessage(paymentOrder).serialize();
 		Logger.write("\nRSA encryption of MD(PI) || MD(OI): \n" + encryptedPaymentOrder);
 		return encryptedPaymentOrder;
 	}

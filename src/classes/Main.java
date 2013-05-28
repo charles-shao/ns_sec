@@ -1,7 +1,6 @@
 package classes;
 
 import java.awt.EventQueue;
-import java.io.File;
 
 import ui.SETFrame;
 

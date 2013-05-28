@@ -23,14 +23,18 @@ public class Merchant extends Entity {
 	@Override
 	public Boolean recieveTransaction(File signatureFile, AsymmetricKey pk,
 			Collection<byte[]> encryptedOI, String pimd) {
+		Logger.write("\tDecrypting the signature with the customers public key...");
 		String dualSignature = decryptSignature(read(signatureFile), pk);
+		Logger.write("\tDecrypting the order information with the customers public key...");
 		String digestedTransaction = digest(encryptedOI);
-		
+		Logger.write("\tChecking if the hashes match the one in the dual signature.");
 		String transaction = Digestor.process(pimd.concat(digestedTransaction));
 		
 		if (transaction.equals(dualSignature)) {
+			Logger.write("\tHashes match!");
 			return true;
 		}
+		Logger.write("\tHashes do not match!");
 		return false;
 	}
 }

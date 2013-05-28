@@ -55,7 +55,7 @@ public class DigitalSignature {
 		String hashSignature = Digestor.process(sb.toString());
 		Logger.write("\tHash created using SHA1");
 		Logger.write("\t\t" + hashSignature);
-		String encryptedSignature = rsa.encrypt(hashSignature).serialize();
+		String encryptedSignature = rsa.encryptMessage(hashSignature).serialize();
 		Logger.write("\tEncrypted hash with CA private key");
 		
 		sb.append("Signature Algorithm: SHA1withRSAEncryption" + BREAK);

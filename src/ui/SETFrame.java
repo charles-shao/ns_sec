@@ -7,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 import classes.Logger;
@@ -17,17 +16,12 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
-import encryption_module.Primes;
-
 public class SETFrame extends SETImpl implements ActionListener {
 
 	private JFrame frmSecureElectronicTransaction;
-	private JTextField prime1;
-	private JTextField prime2;
-	private JButton btnKeyPair;
 	private JScrollPane consolePane;
 	private JTextPane console;
-	private JButton btnSetEntitiesUp;
+	private JButton btnSetCustomerUp;
 	private JButton btnCreateDualSignature;
 	private JButton btnVerifyMerchant;
 	private JButton btnVerifyBank;
@@ -41,6 +35,8 @@ public class SETFrame extends SETImpl implements ActionListener {
 	private JLabel lblConsoleLog;
 	private JButton btnSendOrderDetails;
 	private JButton btnSendPaymentDetails;
+	private JButton btnSetMerchantUp;
+	private JButton btnSetBankUp;
 
 	/**
 	 * Create the application.
@@ -57,7 +53,7 @@ public class SETFrame extends SETImpl implements ActionListener {
 		setFrmSecureElectronicTransaction(new JFrame());
 		getFrmSecureElectronicTransaction().setTitle(
 				"Secure Electronic Transaction");
-		getFrmSecureElectronicTransaction().setBounds(100, 100, 800, 600);
+		getFrmSecureElectronicTransaction().setBounds(100, 100, 800, 700);
 		getFrmSecureElectronicTransaction().setDefaultCloseOperation(
 				JFrame.EXIT_ON_CLOSE);
 		getFrmSecureElectronicTransaction().getContentPane().setLayout(
@@ -94,47 +90,20 @@ public class SETFrame extends SETImpl implements ActionListener {
 				RowSpec.decode("15dlu"),
 				RowSpec.decode("15dlu"),}));
 		
-				JLabel lblPrimeNumbersFor = new JLabel("Prime Numbers for Key Pair");
-				getFrmSecureElectronicTransaction().getContentPane().add(
-						lblPrimeNumbersFor, "2, 3, right, default");
-						
-								prime1 = new JTextField();
-								getFrmSecureElectronicTransaction().getContentPane().add(prime1,
-										"4, 3, fill, default");
-								prime1.setColumns(10);
-				
-						prime2 = new JTextField();
-						getFrmSecureElectronicTransaction().getContentPane().add(prime2,
-								"6, 3, fill, default");
-						prime2.setColumns(10);
-		
-				btnKeyPair = new JButton("Make Keys");
-				getFrmSecureElectronicTransaction().getContentPane().add(btnKeyPair,
-						"8, 3");
-				btnKeyPair.addActionListener(this);
-		
 		lblConsoleLog = new JLabel("Console log");
-		frmSecureElectronicTransaction.getContentPane().add(lblConsoleLog, "2, 4");
-
-		consolePane = new JScrollPane();
-		frmSecureElectronicTransaction.getContentPane().add(consolePane,
-				"2, 5, 7, 1, fill, fill");
-
-		console = new JTextPane();
-		consolePane.setViewportView(console);
-		
-		btnSetEntitiesUp = new JButton("Set entities up");
-		btnSetEntitiesUp.addActionListener(this);
+		frmSecureElectronicTransaction.getContentPane().add(lblConsoleLog, "2, 3");
 		
 		btnClearLog = new JButton("Clear log");
 		btnClearLog.addActionListener(this);
 		
-		frmSecureElectronicTransaction.getContentPane().add(btnClearLog, "8, 6");
-		frmSecureElectronicTransaction.getContentPane().add(btnSetEntitiesUp, "2, 7");
-		
-		btnCreateDualSignature = new JButton("Create dual signature");
-		btnCreateDualSignature.addActionListener(this);
-		frmSecureElectronicTransaction.getContentPane().add(btnCreateDualSignature, "2, 8");
+		frmSecureElectronicTransaction.getContentPane().add(btnClearLog, "8, 3");
+
+		consolePane = new JScrollPane();
+		frmSecureElectronicTransaction.getContentPane().add(consolePane,
+				"2, 4, 7, 5, fill, fill");
+
+		console = new JTextPane();
+		consolePane.setViewportView(console);
 		
 		btnVerifyBank = new JButton("Verify bank");
 		btnVerifyBank.addActionListener(this);
@@ -142,29 +111,45 @@ public class SETFrame extends SETImpl implements ActionListener {
 		btnVerifyMerchant = new JButton("Verify merchant");
 		btnVerifyMerchant.addActionListener(this);
 		
+		btnSetCustomerUp = new JButton("Set customer up");
+		btnSetCustomerUp.addActionListener(this);
+		frmSecureElectronicTransaction.getContentPane().add(btnSetCustomerUp, "2, 9");
+		
+		btnCreateDualSignature = new JButton("Create dual signature");
+		btnCreateDualSignature.addActionListener(this);
+		
+		btnSetMerchantUp = new JButton("Set merchant up");
+		btnSetMerchantUp.addActionListener(this);
+		frmSecureElectronicTransaction.getContentPane().add(btnSetMerchantUp, "4, 9, 3, 1");
+		
+		btnSetBankUp = new JButton("Set bank up");
+		btnSetBankUp.addActionListener(this);
+		frmSecureElectronicTransaction.getContentPane().add(btnSetBankUp, "8, 9");
+		frmSecureElectronicTransaction.getContentPane().add(btnCreateDualSignature, "2, 11");
+		
 		lblMerchantActions = new JLabel("Merchant actions");
-		frmSecureElectronicTransaction.getContentPane().add(lblMerchantActions, "2, 10");
-		frmSecureElectronicTransaction.getContentPane().add(btnVerifyMerchant, "2, 11");
+		frmSecureElectronicTransaction.getContentPane().add(lblMerchantActions, "2, 12");
+		frmSecureElectronicTransaction.getContentPane().add(btnVerifyMerchant, "2, 13");
 		
 		btnSymmetricKeyMerchant = new JButton("Trade symmetric key secret");
 		btnSymmetricKeyMerchant.addActionListener(this);
-		frmSecureElectronicTransaction.getContentPane().add(btnSymmetricKeyMerchant, "4, 11, 3, 1");
+		frmSecureElectronicTransaction.getContentPane().add(btnSymmetricKeyMerchant, "4, 13, 3, 1");
 		
 		btnSendOrderDetails = new JButton("Send order details");
 		btnSendOrderDetails.addActionListener(this);
-		frmSecureElectronicTransaction.getContentPane().add(btnSendOrderDetails, "8, 11");
+		frmSecureElectronicTransaction.getContentPane().add(btnSendOrderDetails, "8, 13");
 		
 		lblBankActions = new JLabel("Bank actions");
-		frmSecureElectronicTransaction.getContentPane().add(lblBankActions, "2, 12");
-		frmSecureElectronicTransaction.getContentPane().add(btnVerifyBank, "2, 13");
+		frmSecureElectronicTransaction.getContentPane().add(lblBankActions, "2, 14");
+		frmSecureElectronicTransaction.getContentPane().add(btnVerifyBank, "2, 15");
 		
 		btnTradeSymmeticKeyBank = new JButton("Trade symmetric key secret");
 		btnTradeSymmeticKeyBank.addActionListener(this);
-		frmSecureElectronicTransaction.getContentPane().add(btnTradeSymmeticKeyBank, "4, 13, 3, 1");
+		frmSecureElectronicTransaction.getContentPane().add(btnTradeSymmeticKeyBank, "4, 15, 3, 1");
 		
 		btnSendPaymentDetails = new JButton("Send payment details");
 		btnSendPaymentDetails.addActionListener(this);
-		frmSecureElectronicTransaction.getContentPane().add(btnSendPaymentDetails, "8, 13");
+		frmSecureElectronicTransaction.getContentPane().add(btnSendPaymentDetails, "8, 15");
 	}
 
 	public void console(String log) {
@@ -174,13 +159,12 @@ public class SETFrame extends SETImpl implements ActionListener {
 	public void actionPerformed(ActionEvent evt) {
 		Object src = evt.getSource();
 		
-		if (src == btnKeyPair) {
-			Primes prime = new Primes();
-			System.out.println(prime.getLargePrime());
-		} else if (src == btnSetEntitiesUp) {
+		if (src == btnSetCustomerUp) {
 			setImpl.setupCustomer();
-			setImpl.setupMerchant();
-			setImpl.setupBank();
+		} else if (src == btnSetMerchantUp) {
+			setImpl.setupMerchant();	
+		} else if (src == btnSetBankUp) {
+			setImpl.setupBank();	
 		} else if (src == btnCreateDualSignature) {
 			try {
 				setImpl.createDualSignature();	

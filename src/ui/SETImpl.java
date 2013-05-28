@@ -77,9 +77,10 @@ public class SETImpl {
 	public void establishMerchantSecret() {
 		if (merchantVerified) {
 			Logger.write("Establishing symmetric key secret...");
-			merchant.establishSecret(customer.getSecretKey());
+			merchant.establishSecret(customer.getSecretKey(),
+					customer.getPublicKey());
 		} else {
-			Logger.write("ERROR: Merchant verification failed - mismatch signature");	
+			Logger.write("ERROR: Merchant verification failed - mismatch signature");
 		}
 	}
 
@@ -90,6 +91,7 @@ public class SETImpl {
 	 */
 	public void sendOrder() {
 		if (merchantVerified) {
+			Logger.write("Sending dual signature, the customers public key, the encrpted order information and the hashed payment information...");
 			if (merchant.recieveTransaction(dualSignature,
 					customer.getPublicKey(), customer.getEncryptedOI(),
 					customer.getPIMD())) {
@@ -116,7 +118,8 @@ public class SETImpl {
 	public void establishBankSecret() {
 		if (bankVerified) {
 			Logger.write("Establishing symmetric key secret...");
-			bank.establishSecret(customer.getSecretKey());
+			bank.establishSecret(customer.getSecretKey(),
+					customer.getPublicKey());
 		} else {
 			Logger.write("ERROR: Bank verification failed - mismatch signature");
 		}
